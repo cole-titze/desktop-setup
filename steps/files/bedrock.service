@@ -1,0 +1,24 @@
+[Unit]
+Description=Minecraft Bedrock Server (Docker)
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+
+EnvironmentFile=/opt/bedrock/bedrock.env
+
+ExecStartPre=-/usr/bin/docker rm -f bedrock
+ExecStart=/usr/bin/docker run --name bedrock \
+  -p 19132:19132/udp \
+  -v /opt/bedrock/data:/data \
+  --env-file /opt/bedrock/bedrock.env \
+  itzg/minecraft-bedrock-server
+
+ExecStop=/usr/bin/docker stop bedrock
+
+[Install]
+WantedBy=multi-user.target
