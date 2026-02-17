@@ -30,6 +30,9 @@ fi
 for step in "${STEPS[@]}"; do
   echo "==> Running: $(basename "$step")"
   bash "$step"
+
+  echo
+  read -rp "Press Enter to continue to the next step..."
   echo
 done
 
