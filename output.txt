@@ -1,0 +1,424 @@
+==> Running Pop!_OS bootstrap from: /home/cole/desktop-setup
+==> Steps directory: /home/cole/desktop-setup/steps
+
+==> Running: 00-system.sh
+==> System: update + essentials
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 https://download.docker.com/linux/debian bookworm InRelease
+Hit:2 https://packages.microsoft.com/repos/code stable InRelease
+Hit:3 http://apt.pop-os.org/proprietary jammy InRelease
+Hit:4 http://apt.pop-os.org/release jammy InRelease
+Hit:5 http://apt.pop-os.org/ubuntu jammy InRelease
+Hit:6 http://apt.pop-os.org/ubuntu jammy-security InRelease
+Hit:7 http://apt.pop-os.org/ubuntu jammy-updates InRelease
+Hit:8 http://apt.pop-os.org/ubuntu jammy-backports InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+All packages are up to date.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+The following packages were automatically installed and are no longer required:
+  libfwupdplugin5 libgcab-1.0-0 libsmbios-c2 nvidia-firmware-580-580.82.07
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+lsb-release is already the newest version (11.1.0ubuntu4).
+ca-certificates is already the newest version (20240203~22.04.1).
+curl is already the newest version (7.81.0-1ubuntu1.21).
+git is already the newest version (1:2.34.1-1ubuntu1.15).
+gnupg is already the newest version (2.2.27-3ubuntu2.5).
+wget is already the newest version (1.21.2-2ubuntu1.1).
+software-properties-common is already the newest version (0.99.22.9).
+The following packages were automatically installed and are no longer required:
+  libfwupdplugin5 libgcab-1.0-0 libsmbios-c2 nvidia-firmware-580-580.82.07
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+00-system complete
+
+==> Running: 05-os-settings.sh
+==> Applying OS settings
+Screen sleep disabled.
+05-os-settings complete
+
+==> Running: 10-packages.sh
+==> Installing base packages
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.9ubuntu3).
+htop is already the newest version (3.0.5-7build2).
+zip is already the newest version (3.0-12build2).
+neovim is already the newest version (0.6.1-3).
+tree is already the newest version (2.0.2-1).
+jq is already the newest version (1.6-2.1ubuntu3.1).
+net-tools is already the newest version (1.60+git20181103.0eebece-1ubuntu5.4).
+unzip is already the newest version (6.0-26ubuntu3.2).
+The following packages were automatically installed and are no longer required:
+  libfwupdplugin5 libgcab-1.0-0 libsmbios-c2 nvidia-firmware-580-580.82.07
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+10-packages complete
+
+==> Running: 20-steam.sh
+==> Installing Steam
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 http://apt.pop-os.org/proprietary jammy InRelease
+Hit:2 https://packages.microsoft.com/repos/code stable InRelease
+Hit:3 https://download.docker.com/linux/debian bookworm InRelease
+Hit:4 http://apt.pop-os.org/release jammy InRelease
+Hit:5 http://apt.pop-os.org/ubuntu jammy InRelease
+Hit:6 http://apt.pop-os.org/ubuntu jammy-security InRelease
+Hit:7 http://apt.pop-os.org/ubuntu jammy-updates InRelease
+Hit:8 http://apt.pop-os.org/ubuntu jammy-backports InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+All packages are up to date.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+steam:i386 is already the newest version (1:1.0.0.78~ds-3~1713892545~22.04~baa62f3).
+The following packages were automatically installed and are no longer required:
+  libfwupdplugin5 libgcab-1.0-0 libsmbios-c2 nvidia-firmware-580-580.82.07
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+20-steam complete
+Launch Steam from the app menu to finish initial setup.
+
+==> Running: 25-steam-autostart.sh
+==> Enabling Steam auto-start (GNOME session, 5s delay)
+Steam will start 5 seconds after login.
+To disable later: delete /home/cole/.config/autostart/steam.desktop
+25-steam-autostart complete
+
+==> Running: 31-gitconfig.sh
+==> Configuring global Git settings
+35-gitconfig complete
+
+==> Running: 40-vscode.sh
+==> Installing VS Code
+VS Code already installed, skipping.
+40-vscode complete
+
+==> Running: 45-vscode-settings.sh
+==> Configuring VS Code settings
+45-vscode-settings complete
+
+==> Running: 50-docker.sh
+==> Installing Docker
+# Executing docker install script, commit: f381ee68b32e515bb4dc034b339266aff1fbc460
+Warning: the "docker" command appears to already exist on this system.
+
+If you already have Docker installed, this script can cause trouble, which is
+why we're displaying this warning and provide the opportunity to cancel the
+installation.
+
+If you installed the current Docker package using this script and are using it
+again to update Docker, you can ignore this message, but be aware that the
+script resets any custom changes in the deb and rpm repo configuration
+files to match the parameters passed to the script.
+
+You may press Ctrl+C now to abort this script.
++ sleep 20
++ sh -c apt-get -qq update >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get -y -qq install ca-certificates curl >/dev/null
++ sh -c install -m 0755 -d /etc/apt/keyrings
++ sh -c curl -fsSL "https://download.docker.com/linux/debian/gpg" -o /etc/apt/keyrings/docker.asc
++ sh -c chmod a+r /etc/apt/keyrings/docker.asc
++ sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list
++ sh -c apt-get -qq update >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get -y -qq install docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin docker-model-plugin >/dev/null
+Using systemd to manage Docker service
++ sh -c systemctl enable --now docker.service
+  UNIT                                                                                                                    LOAD   ACTIVE SUB       DESCRIPTION
+  proc-sys-fs-binfmt_misc.automount                                                                                       loaded active running   Arbitrary Executable File Formats File System Automount Point
+  sys-bus-pci-drivers-nvidia.device                                                                                       loaded active plugged   /sys/bus/pci/drivers/nvidia
+  sys-devices-pci0000:00-0000:00:01.1-0000:01:00.0-nvme-nvme0-nvme0n1-nvme0n1p1.device                                    loaded active plugged   Samsung SSD 990 PRO 2TB 1
+  sys-devices-pci0000:00-0000:00:01.1-0000:01:00.0-nvme-nvme0-nvme0n1-nvme0n1p2.device                                    loaded active plugged   Samsung SSD 990 PRO 2TB recovery
+  sys-devices-pci0000:00-0000:00:01.1-0000:01:00.0-nvme-nvme0-nvme0n1-nvme0n1p3.device                                    loaded active plugged   Samsung SSD 990 PRO 2TB 3
+  sys-devices-pci0000:00-0000:00:01.1-0000:01:00.0-nvme-nvme0-nvme0n1-nvme0n1p4.device                                    loaded active plugged   Samsung SSD 990 PRO 2TB 4
+  sys-devices-pci0000:00-0000:00:01.1-0000:01:00.0-nvme-nvme0-nvme0n1.device                                              loaded active plugged   Samsung SSD 990 PRO 2TB
+  sys-devices-pci0000:00-0000:00:01.2-0000:02:00.0-0000:03:01.0-0000:04:00.0-nvme-nvme1-nvme1n1-nvme1n1p1.device          loaded active plugged   Samsung SSD 970 EVO 1TB 1
+  sys-devices-pci0000:00-0000:00:01.2-0000:02:00.0-0000:03:01.0-0000:04:00.0-nvme-nvme1-nvme1n1.device                    loaded active plugged   Samsung SSD 970 EVO 1TB
+  sys-devices-pci0000:00-0000:00:01.2-0000:02:00.0-0000:03:03.0-0000:05:00.0-net-wlp5s0.device                            loaded active plugged   Dual Band Wireless-AC 3168NGW [Stone Peak]
+  sys-devices-pci0000:00-0000:00:01.2-0000:02:00.0-0000:03:04.0-0000:06:00.0-net-enp6s0.device                            loaded active plugged   I211 Gigabit Network Connection
+  sys-devices-pci0000:00-0000:00:01.2-0000:02:00.0-0000:03:08.0-0000:07:00.3-usb3-3\x2d5-3\x2d5:1.0-bluetooth-hci0.device loaded active plugged   /sys/devices/pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:08.0/0000:07:00.3/usb3/3-5/3-5:1.0/bluetooth/hci0
+  sys-devices-pci0000:00-0000:00:03.1-0000:0a:00.1-sound-card0-controlC0.device                                           loaded active plugged   /sys/devices/pci0000:00/0000:00:03.1/0000:0a:00.1/sound/card0/controlC0
+  sys-devices-pci0000:00-0000:00:08.1-0000:0c:00.3-usb5-5\x2d2-5\x2d2:1.3-host0-target0:0:0-0:0:0:0-block-sr0.device      loaded active plugged   Optical_Drive
+  sys-devices-pci0000:00-0000:00:08.1-0000:0c:00.4-sound-card1-controlC1.device                                           loaded active plugged   /sys/devices/pci0000:00/0000:00:08.1/0000:0c:00.4/sound/card1/controlC1
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.0-tty-ttyS0.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.0/tty/ttyS0
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.1-tty-ttyS1.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.1/tty/ttyS1
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.10-tty-ttyS10.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.10/tty/ttyS10
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.11-tty-ttyS11.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.11/tty/ttyS11
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.12-tty-ttyS12.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.12/tty/ttyS12
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.13-tty-ttyS13.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.13/tty/ttyS13
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.14-tty-ttyS14.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.14/tty/ttyS14
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.15-tty-ttyS15.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.15/tty/ttyS15
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.16-tty-ttyS16.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.16/tty/ttyS16
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.17-tty-ttyS17.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.17/tty/ttyS17
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.18-tty-ttyS18.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.18/tty/ttyS18
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.19-tty-ttyS19.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.19/tty/ttyS19
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.2-tty-ttyS2.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.2/tty/ttyS2
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.20-tty-ttyS20.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.20/tty/ttyS20
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.21-tty-ttyS21.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.21/tty/ttyS21
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.22-tty-ttyS22.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.22/tty/ttyS22
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.23-tty-ttyS23.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.23/tty/ttyS23
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.24-tty-ttyS24.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.24/tty/ttyS24
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.25-tty-ttyS25.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.25/tty/ttyS25
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.26-tty-ttyS26.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.26/tty/ttyS26
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.27-tty-ttyS27.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.27/tty/ttyS27
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.28-tty-ttyS28.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.28/tty/ttyS28
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.29-tty-ttyS29.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.29/tty/ttyS29
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.3-tty-ttyS3.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.3/tty/ttyS3
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.30-tty-ttyS30.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.30/tty/ttyS30
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.31-tty-ttyS31.device                                          loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.31/tty/ttyS31
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.4-tty-ttyS4.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.4/tty/ttyS4
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.5-tty-ttyS5.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.5/tty/ttyS5
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.6-tty-ttyS6.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.6/tty/ttyS6
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.7-tty-ttyS7.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.7/tty/ttyS7
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.8-tty-ttyS8.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.8/tty/ttyS8
+  sys-devices-platform-serial8250-serial8250:0-serial8250:0.9-tty-ttyS9.device                                            loaded active plugged   /sys/devices/platform/serial8250/serial8250:0/serial8250:0.9/tty/ttyS9
+  sys-devices-virtual-block-dm\x2d0.device                                                                                loaded active plugged   /sys/devices/virtual/block/dm-0
+  sys-devices-virtual-block-zram0.device                                                                                  loaded active plugged   /sys/devices/virtual/block/zram0
+  sys-devices-virtual-misc-rfkill.device                                                                                  loaded active plugged   /sys/devices/virtual/misc/rfkill
+  sys-devices-virtual-net-docker0.device                                                                                  loaded active plugged   /sys/devices/virtual/net/docker0
+  sys-devices-virtual-tty-ttyprintk.device                                                                                loaded active plugged   /sys/devices/virtual/tty/ttyprintk
+  sys-module-configfs.device                                                                                              loaded active plugged   /sys/module/configfs
+  sys-module-fuse.device                                                                                                  loaded active plugged   /sys/module/fuse
+  sys-subsystem-bluetooth-devices-hci0.device                                                                             loaded active plugged   /sys/subsystem/bluetooth/devices/hci0
+  sys-subsystem-net-devices-docker0.device                                                                                loaded active plugged   /sys/subsystem/net/devices/docker0
+  sys-subsystem-net-devices-enp6s0.device                                                                                 loaded active plugged   I211 Gigabit Network Connection
+  sys-subsystem-net-devices-wlp5s0.device                                                                                 loaded active plugged   Dual Band Wireless-AC 3168NGW [Stone Peak]
+  -.mount                                                                                                                 loaded active mounted   Root Mount
+  boot-efi.mount                                                                                                          loaded active mounted   /boot/efi
+  dev-hugepages.mount                                                                                                     loaded active mounted   Huge Pages File System
+  dev-mqueue.mount                                                                                                        loaded active mounted   POSIX Message Queue File System
+  proc-sys-fs-binfmt_misc.mount                                                                                           loaded active mounted   Arbitrary Executable File Formats File System
+  recovery.mount                                                                                                          loaded active mounted   /recovery
+  run-credentials-systemd\x2dsysusers.service.mount                                                                       loaded active mounted   /run/credentials/systemd-sysusers.service
+  run-user-1000-doc.mount                                                                                                 loaded active mounted   /run/user/1000/doc
+  run-user-1000-gvfs.mount                                                                                                loaded active mounted   /run/user/1000/gvfs
+  run-user-1000.mount                                                                                                     loaded active mounted   /run/user/1000
+  sys-fs-fuse-connections.mount                                                                                           loaded active mounted   FUSE Control File System
+  sys-kernel-config.mount                                                                                                 loaded active mounted   Kernel Configuration File System
+  sys-kernel-debug.mount                                                                                                  loaded active mounted   Kernel Debug File System
+  sys-kernel-tracing.mount                                                                                                loaded active mounted   Kernel Trace File System
+  acpid.path                                                                                                              loaded active running   ACPI Events Check
+  cups.path                                                                                                               loaded active running   CUPS Scheduler
+  systemd-ask-password-plymouth.path                                                                                      loaded active waiting   Forward Password Requests to Plymouth Directory Watch
+  systemd-ask-password-wall.path                                                                                          loaded active waiting   Forward Password Requests to Wall Directory Watch
+  whoopsie.path                                                                                                           loaded active waiting   Start whoopsie on modification of the /var/crash directory
+  init.scope                                                                                                              loaded active running   System and Service Manager
+  session-2.scope                                                                                                         loaded active running   Session 2 of User cole
+  accounts-daemon.service                                                                                                 loaded active running   Accounts Service
+  acpid.service                                                                                                           loaded active running   ACPI event daemon
+  alsa-restore.service                                                                                                    loaded active exited    Save/Restore Sound Card State
+  apparmor.service                                                                                                        loaded active exited    Load AppArmor profiles
+  apport.service                                                                                                          loaded active exited    LSB: automatic crash report generation
+  avahi-daemon.service                                                                                                    loaded active running   Avahi mDNS/DNS-SD Stack
+  blk-availability.service                                                                                                loaded active exited    Availability of block devices
+  bluetooth.service                                                                                                       loaded active running   Bluetooth service
+  chrony.service                                                                                                          loaded active running   chrony, an NTP client/server
+  colord.service                                                                                                          loaded active running   Manage, Install and Generate Color Profiles
+  com.system76.PowerDaemon.service                                                                                        loaded active running   System76 Power Daemon
+  com.system76.Scheduler.service                                                                                          loaded active running   Automatically configure CPU scheduler for responsiveness on AC
+  com.system76.SystemUpdater.service                                                                                      loaded active running   Distribution updater
+  console-setup.service                                                                                                   loaded active exited    Set console font and keymap
+  containerd.service                                                                                                      loaded active running   containerd container runtime
+  cron.service                                                                                                            loaded active running   Regular background program processing daemon
+  cups-browsed.service                                                                                                    loaded active running   Make remote CUPS printers available locally
+  cups.service                                                                                                            loaded active running   CUPS Scheduler
+  dbus-:1.2-org.pop_os.transition_system@0.service                                                                        loaded active running   dbus-:1.2-org.pop_os.transition_system@0.service
+  dbus-broker.service                                                                                                     loaded active running   D-Bus System Message Bus
+  docker.service                                                                                                          loaded active running   Docker Application Container Engine
+  finalrd.service                                                                                                         loaded active exited    Create final runtime dir for shutdown pivot root
+  gdm.service                                                                                                             loaded active running   GNOME Display Manager
+  ifupdown-pre.service                                                                                                    loaded active exited    Helper to synchronize boot up for ifupdown
+  keyboard-setup.service                                                                                                  loaded active exited    Set the console keyboard layout
+  kmod-static-nodes.service                                                                                               loaded active exited    Create List of Static Device Nodes
+  lvm2-monitor.service                                                                                                    loaded active exited    Monitoring of LVM2 mirrors, snapshots etc. using dmeventd or progress polling
+  ModemManager.service                                                                                                    loaded active running   Modem Manager
+  networkd-dispatcher.service                                                                                             loaded active running   Dispatcher daemon for systemd-networkd
+  networking.service                                                                                                      loaded active exited    Raise network interfaces
+  NetworkManager.service                                                                                                  loaded active running   Network Manager
+  openvpn.service                                                                                                         loaded active exited    OpenVPN service
+  packagekit.service                                                                                                      loaded active running   PackageKit Daemon
+  plymouth-quit-wait.service                                                                                              loaded active exited    Hold until boot process finishes up
+  plymouth-read-write.service                                                                                             loaded active exited    Tell Plymouth To Write Out Runtime Data
+  plymouth-start.service                                                                                                  loaded active exited    Show Plymouth Boot Screen
+  polkit.service                                                                                                          loaded active running   Authorization Manager
+  rsyslog.service                                                                                                         loaded active running   System Logging Service
+  rtkit-daemon.service                                                                                                    loaded active running   RealtimeKit Scheduling Policy Service
+  setvtrgb.service                                                                                                        loaded active exited    Set console scheme
+  switcheroo-control.service                                                                                              loaded active running   Switcheroo Control Proxy service
+  systemd-binfmt.service                                                                                                  loaded active exited    Set Up Additional Binary Formats
+  systemd-cryptsetup@cryptswap.service                                                                                    loaded active exited    Cryptography Setup for cryptswap
+  systemd-journal-flush.service                                                                                           loaded active exited    Flush Journal to Persistent Storage
+  systemd-journald.service                                                                                                loaded active running   Journal Service
+  systemd-logind.service                                                                                                  loaded active running   User Login Management
+  systemd-modules-load.service                                                                                            loaded active exited    Load Kernel Modules
+  systemd-random-seed.service                                                                                             loaded active exited    Load/Save Random Seed
+  systemd-remount-fs.service                                                                                              loaded active exited    Remount Root and Kernel File Systems
+  systemd-resolved.service                                                                                                loaded active running   Network Name Resolution
+  systemd-sysctl.service                                                                                                  loaded active exited    Apply Kernel Variables
+  systemd-sysusers.service                                                                                                loaded active exited    Create System Users
+  systemd-tmpfiles-setup-dev.service                                                                                      loaded active exited    Create Static Device Nodes in /dev
+  systemd-tmpfiles-setup.service                                                                                          loaded active exited    Create Volatile Files and Directories
+  systemd-udev-trigger.service                                                                                            loaded active exited    Coldplug All udev Devices
+  systemd-udevd.service                                                                                                   loaded active running   Rule-based Manager for Device Events and Files
+  systemd-update-utmp.service                                                                                             loaded active exited    Record System Boot/Shutdown in UTMP
+  systemd-user-sessions.service                                                                                           loaded active exited    Permit User Sessions
+  touchegg.service                                                                                                        loaded active running   Touchégg Daemon
+  udisks2.service                                                                                                         loaded active running   Disk Manager
+  ufw.service                                                                                                             loaded active exited    Uncomplicated firewall
+  upower.service                                                                                                          loaded active running   Daemon for power management
+  user-runtime-dir@1000.service                                                                                           loaded active exited    User Runtime Directory /run/user/1000
+  user@1000.service                                                                                                       loaded active running   User Manager for UID 1000
+  wpa_supplicant.service                                                                                                  loaded active running   WPA supplicant
+  -.slice                                                                                                                 loaded active active    Root Slice
+  system-dbus\x2d:1.2\x2dorg.pop_os.transition_system.slice                                                               loaded active active    Slice /system/dbus-:1.2-org.pop_os.transition_system
+  system-getty.slice                                                                                                      loaded active active    Slice /system/getty
+  system-modprobe.slice                                                                                                   loaded active active    Slice /system/modprobe
+  system-systemd\x2dcryptsetup.slice                                                                                      loaded active active    Cryptsetup Units Slice
+  system.slice                                                                                                            loaded active active    System Slice
+  user-1000.slice                                                                                                         loaded active active    User Slice of UID 1000
+  user.slice                                                                                                              loaded active active    User and Session Slice
+  acpid.socket                                                                                                            loaded active running   ACPID Listen Socket
+  avahi-daemon.socket                                                                                                     loaded active running   Avahi mDNS/DNS-SD Stack Activation Socket
+  cups.socket                                                                                                             loaded active running   CUPS Scheduler
+  dbus.socket                                                                                                             loaded active running   D-Bus System Message Bus Socket
+  dm-event.socket                                                                                                         loaded active listening Device-mapper event daemon FIFOs
+  docker.socket                                                                                                           loaded active running   Docker Socket for the API
+  lvm2-lvmpolld.socket                                                                                                    loaded active listening LVM2 poll daemon socket
+  syslog.socket                                                                                                           loaded active running   Syslog Socket
+  systemd-fsckd.socket                                                                                                    loaded active listening fsck to fsckd communication Socket
+  systemd-initctl.socket                                                                                                  loaded active listening initctl Compatibility Named Pipe
+  systemd-journald-audit.socket                                                                                           loaded active running   Journal Audit Socket
+  systemd-journald-dev-log.socket                                                                                         loaded active running   Journal Socket (/dev/log)
+  systemd-journald.socket                                                                                                 loaded active running   Journal Socket
+  systemd-rfkill.socket                                                                                                   loaded active listening Load/Save RF Kill Switch Status /dev/rfkill Watch
+  systemd-udevd-control.socket                                                                                            loaded active running   udev Control Socket
+  systemd-udevd-kernel.socket                                                                                             loaded active running   udev Kernel Socket
+  uuidd.socket                                                                                                            loaded active listening UUID daemon activation socket
+  dev-mapper-cryptswap.swap                                                                                               loaded active active    /dev/mapper/cryptswap
+  dev-zram0.swap                                                                                                          loaded active active    /dev/zram0
+  basic.target                                                                                                            loaded active active    Basic System
+  blockdev@dev-mapper-cryptswap.target                                                                                    loaded active active    Block Device Preparation for /dev/mapper/cryptswap
+  bluetooth.target                                                                                                        loaded active active    Bluetooth Support
+  cryptsetup.target                                                                                                       loaded active active    Local Encrypted Volumes
+  getty.target                                                                                                            loaded active active    Login Prompts
+  graphical.target                                                                                                        loaded active active    Graphical Interface
+  local-fs-pre.target                                                                                                     loaded active active    Preparation for Local File Systems
+  local-fs.target                                                                                                         loaded active active    Local File Systems
+  multi-user.target                                                                                                       loaded active active    Multi-User System
+  network-online.target                                                                                                   loaded active active    Network is Online
+  network-pre.target                                                                                                      loaded active active    Preparation for Network
+  network.target                                                                                                          loaded active active    Network
+  nss-lookup.target                                                                                                       loaded active active    Host and Network Name Lookups
+  nss-user-lookup.target                                                                                                  loaded active active    User and Group Name Lookups
+  paths.target                                                                                                            loaded active active    Path Units
+  remote-fs.target                                                                                                        loaded active active    Remote File Systems
+  slices.target                                                                                                           loaded active active    Slice Units
+  sockets.target                                                                                                          loaded active active    Socket Units
+  sound.target                                                                                                            loaded active active    Sound Card
+  swap.target                                                                                                             loaded active active    Swaps
+  sysinit.target                                                                                                          loaded active active    System Initialization
+  time-set.target                                                                                                         loaded active active    System Time Set
+  time-sync.target                                                                                                        loaded active active    System Time Synchronized
+  timers.target                                                                                                           loaded active active    Timer Units
+  veritysetup.target                                                                                                      loaded active active    Local Verity Protected Volumes
+  apt-daily-upgrade.timer                                                                                                 loaded active waiting   Daily apt upgrade and clean activities
+  apt-daily.timer                                                                                                         loaded active waiting   Daily apt download activities
+  dpkg-db-backup.timer                                                                                                    loaded active waiting   Daily dpkg database backup timer
+  e2scrub_all.timer                                                                                                       loaded active waiting   Periodic ext4 Online Metadata Check for All Filesystems
+  fstrim.timer                                                                                                            loaded active waiting   Discard unused blocks once a week
+  fwupd-refresh.timer                                                                                                     loaded active waiting   Refresh fwupd metadata regularly
+  logrotate.timer                                                                                                         loaded active waiting   Daily rotation of log files
+  man-db.timer                                                                                                            loaded active waiting   Daily man-db regeneration
+  motd-news.timer                                                                                                         loaded active waiting   Message of the Day
+  systemd-tmpfiles-clean.timer                                                                                            loaded active waiting   Daily Cleanup of Temporary Directories
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+206 loaded units listed. Pass --all to see loaded but inactive units, too.
+To show all installed unit files use 'systemctl list-unit-files'.
+INFO: Docker daemon enabled and started
+
++ sh -c docker version
+Client: Docker Engine - Community
+ Version:           29.2.1
+ API version:       1.53
+ Go version:        go1.25.6
+ Git commit:        a5c7197
+ Built:             Mon Feb  2 17:17:24 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          29.2.1
+  API version:      1.53 (minimum version 1.44)
+  Go version:       go1.25.6
+  Git commit:       6bc6209
+  Built:            Mon Feb  2 17:17:24 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v2.2.1
+  GitCommit:        dea7da592f5d1d2b7755e3a161be07f43fad8f75
+ runc:
+  Version:          1.3.4
+  GitCommit:        v1.3.4-0-gd6d73eb8
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+================================================================================
+
+To run Docker as a non-privileged user, consider setting up the
+Docker daemon in rootless mode for your user:
+
+    dockerd-rootless-setuptool.sh install
+
+Visit https://docs.docker.com/go/rootless/ to learn about rootless mode.
+
+
+To run the Docker daemon as a fully privileged service, but granting non-root
+users access, refer to https://docs.docker.com/go/daemon-access/
+
+WARNING: Access to the remote API on a privileged Docker daemon is equivalent
+         to root access on the host. Refer to the 'Docker daemon attack surface'
+         documentation for details: https://docs.docker.com/go/attack-surface/
+
+================================================================================
+
+Synchronizing state of docker.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable docker
+You must log out and back in (or reboot) before using docker without sudo.
+50-docker complete
+
+==> Running: 60-minecraft-bedrock-server.sh
+==> Installing Minecraft Bedrock Server (Docker)
+cp: cannot stat '/home/cole/desktop-setup/files/bedrock.env': No such file or directory
