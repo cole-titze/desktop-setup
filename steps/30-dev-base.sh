@@ -24,6 +24,6 @@ sudo apt-get update
 # Install .NET SDK (pick the version you want)
 sudo apt-get install -y \
   -o Dpkg::Options::="--force-confnew" \
-  dotnet-sdk-10.0
+  dotnet-sdk-9.0
 
 echo "30-dev-base complete"
