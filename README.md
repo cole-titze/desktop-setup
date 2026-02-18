@@ -15,7 +15,7 @@ sudo apt-get install git
 git clone https://github.com/cole-titze/desktop-setup.git
 cd desktop-setup
 chmod u+r+x *
-source setup.sh > output.txt 2>&1
+source setup.sh
 ```
 ## [Add key to github](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 + Copy contents of ~/.ssh/id_ed25519.pub to github public ssh keys in settings
