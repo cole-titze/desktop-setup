@@ -24,4 +24,5 @@ source setup.sh > output.txt 2>&1
 cd && rm -rf desktop-setup
 git clone git@github.com:coleTitze/desktop-setup.git
 ```
-+ When done add dhcp reservation in pihole for static ip
++ Add dhcp reservation in pihole for static ip (Ex. 10.42.0.50)
++ Set auto-login for "steam console" experience (Users -> auto-login)
