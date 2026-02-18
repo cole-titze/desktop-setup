@@ -7,7 +7,7 @@ Scripts to deploy a fresh desktop environment.
 ## Restore Steps
 + Install base dependencies for scripts
 ```
-sudo apt-get update && sudo apt-get upgrade 
+sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install git
 ```
 + Install and run setup script
@@ -24,3 +24,4 @@ source setup.sh > output.txt 2>&1
 cd && rm -rf desktop-setup
 git clone git@github.com:coleTitze/desktop-setup.git
 ```
++ When done add dhcp reservation in pihole for static ip
