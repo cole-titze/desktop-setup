@@ -15,6 +15,9 @@ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-typ
 
 echo "Screen sleep disabled."
 
+# Make text bigger
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.75
+
 # --- Power button behavior ---
 # Options: 'poweroff', 'interactive', 'suspend', 'hibernate', 'nothing'
 gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'

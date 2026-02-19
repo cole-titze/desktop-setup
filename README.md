@@ -27,3 +27,5 @@ git clone git@github.com:cole-titze/desktop-setup.git
 + Add dhcp reservation in pihole for static ip (Ex. 10.42.0.50)
 + Set auto-login for "steam console" experience (Users -> auto-login)
 + Copy over backup minecraft worlds to /opt/bedrock/data/worlds
++ Update refresh rate to max
++ Connect moonlight to desktop for initial setup (https://localhost:47990)
