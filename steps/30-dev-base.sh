@@ -10,7 +10,8 @@ sudo apt-get install -y \
   python3 \
   python3-venv \
   python3-pip \
-  wget
+  wget \
+  gh
 
 # Install Microsoft package repository for Ubuntu 22.04 (Pop!_OS jammy)
 if ! dpkg -s packages-microsoft-prod >/dev/null 2>&1; then
