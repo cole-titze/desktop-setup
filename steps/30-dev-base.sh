@@ -27,4 +27,6 @@ sudo apt-get install -y \
   -o Dpkg::Options::="--force-confnew" \
   dotnet-sdk-9.0
 
+dotnet tool install -g microsoft.sqlpackage
+
 echo "30-dev-base complete"
