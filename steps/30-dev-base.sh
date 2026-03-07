@@ -30,6 +30,7 @@ sudo apt-get install -y \
 dotnet tool install -g microsoft.sqlpackage
 
 # Install node
-sudo apt install nodejs npm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+
 
 echo "30-dev-base complete"
