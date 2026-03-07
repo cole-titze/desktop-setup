@@ -29,4 +29,7 @@ sudo apt-get install -y \
 
 dotnet tool install -g microsoft.sqlpackage
 
+# Install node
+sudo apt install nodejs npm
+
 echo "30-dev-base complete"
