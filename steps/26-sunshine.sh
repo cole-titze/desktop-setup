@@ -20,7 +20,7 @@ fi
 # Install Sunshine if not already installed
 if ! flatpak list | grep -q dev.lizardbyte.app.Sunshine; then
   flatpak install -y flathub dev.lizardbyte.app.Sunshine
-  flatpak run --command=additional-install.sh dev.lizardbyte.app.Sunshine
+  sudo flatpak run --command=additional-install.sh dev.lizardbyte.app.Sunshine
 else
   echo "Sunshine already installed."
 fi
