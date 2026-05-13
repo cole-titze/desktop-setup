@@ -1,7 +1,7 @@
 # desktop-setup
 Scripts to deploy a fresh desktop environment.
 
-## [Pop! OS Download](https://system76.com/pop/download/?srsltid=AfmBOopceCSQ7sEyktnyPRdyNQvyLp19kw9GvyJileS4WTL-QezShkrF)
+## [Kubuntu 24.04 LTS Download](https://kubuntu.org/getkubuntu/)
 + Start by installing the base OS and wipe everything
 
 ## Restore Steps

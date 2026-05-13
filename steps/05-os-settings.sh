@@ -1,25 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "==> Applying OS settings"
+echo "==> Applying OS settings (KDE Plasma)"
 
-# Disable screen blank
-gsettings set org.gnome.desktop.session idle-delay 0
+# Disable screen auto-lock
+kwriteconfig5 --file kscreenlockerrc --group Daemon --key Autolock false
 
-# Disable screen dim
-gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
+# Disable DPMS screen-off, dim, and suspend on idle (AC power)
+kwriteconfig5 --file powermanagementprofilesrc --group "AC" --group "DPMSControl" --key idleTime 0
+kwriteconfig5 --file powermanagementprofilesrc --group "AC" --group "BrightnessControl" --key idleTime 0
+kwriteconfig5 --file powermanagementprofilesrc --group "AC" --group "SuspendSession" --key idleTime 0
 
-# Disable automatic suspend (AC + battery)
-gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing'
+echo "Screen sleep and auto-lock disabled."
 
-echo "Screen sleep disabled."
+# Make text slightly bigger (~1.1×; default DPI is 96)
+kwriteconfig5 --file kcmfonts --group General --key forceFontDPI 106
 
-# Make text bigger
-gsettings set org.gnome.desktop.interface text-scaling-factor 1.1
+# Power button: show interactive logout/power dialog
+# Verify in System Settings > Power Management > Button Events if this needs adjusting
+kwriteconfig5 --file powermanagementprofilesrc --group "AC" --group "HandleButtonEvents" --key powerButtonAction 16
 
-# --- Power button behavior ---
-# Options: 'poweroff', 'interactive', 'suspend', 'hibernate', 'nothing'
-gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
+# Signal running Plasma session to reload power settings (no-op at install time)
+qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement \
+  org.kde.Solid.PowerManagement.refreshStatus 2>/dev/null || true
 
 echo "05-os-settings complete"
