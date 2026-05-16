@@ -13,7 +13,7 @@ cat > "$DESKTOP_FILE" <<'EOF'
 Type=Application
 Name=Steam
 Comment=Start Steam on login
-Exec=steam -silent
+Exec=steam -silent -pipewire
 X-GNOME-Autostart-enabled=true
 X-GNOME-Autostart-Delay=5
 EOF

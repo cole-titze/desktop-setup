@@ -14,7 +14,7 @@ if [[ ! -d "$STEPS_DIR" ]]; then
   exit 1
 fi
 
-echo "==> Running Pop!_OS bootstrap from: $ROOT_DIR"
+echo "==> Running Kubuntu bootstrap from: $ROOT_DIR"
 echo "==> Steps directory: $STEPS_DIR"
 echo
 

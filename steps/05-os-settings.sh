@@ -24,4 +24,7 @@ kwriteconfig5 --file powermanagementprofilesrc --group "AC" --group "HandleButto
 qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement \
   org.kde.Solid.PowerManagement.refreshStatus 2>/dev/null || true
 
+# Force X11 session — SDDM autologin defaults to 'plasma' which is Wayland in Plasma 6
+sudo sed -i 's/^Session=.*/Session=plasmax11/' /etc/sddm.conf
+
 echo "05-os-settings complete"

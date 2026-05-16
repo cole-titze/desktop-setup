@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Steam Remote
+Exec=/home/cole/scripts/remote-toggle.sh
+Icon=preferences-desktop-display
+Terminal=false

@@ -4,7 +4,11 @@ set -euo pipefail
 echo "==> Installing Docker"
 
 # Install using official script
-curl -fsSL https://get.docker.com | sudo sh
+if ! command -v docker >/dev/null 2>&1; then
+  curl -fsSL https://get.docker.com | sudo sh
+else
+  echo "Docker already installed, skipping."
+fi
 
 # Add current user to docker group
 sudo usermod -aG docker "$USER"

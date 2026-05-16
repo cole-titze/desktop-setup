@@ -13,19 +13,32 @@ sudo apt-get install -y \
   wget \
   gh
 
-# Install Microsoft package repository for Ubuntu 22.04 (Pop!_OS jammy)
-if ! dpkg-query -W -f='${Status}' packages-microsoft-prod 2>/dev/null | grep -q "install ok installed"; then
-  wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-  sudo dpkg -i packages-microsoft-prod.deb
-  rm packages-microsoft-prod.deb
+UBUNTU_MAJOR=$(lsb_release -rs | cut -d. -f1)
+
+if [[ "$UBUNTU_MAJOR" -ge 24 ]]; then
+  # Remove Microsoft repo if present — it conflicts with Ubuntu's native dotnet packages
+  if dpkg-query -W -f='${Status}' packages-microsoft-prod 2>/dev/null | grep -q "install ok installed"; then
+    sudo apt-get purge -y packages-microsoft-prod
+    sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+    sudo apt-get update
+  fi
+  # Ubuntu 26.04+ ships dotnet-sdk-10.0 natively; 24.04 ships 8.0/9.0
+  if apt-cache show dotnet-sdk-9.0 2>/dev/null | grep -q "ubuntu"; then
+    sudo apt-get install -y dotnet-sdk-9.0
+  else
+    sudo apt-get install -y dotnet-sdk-10.0
+  fi
+else
+  # Older Ubuntu: add Microsoft package repo
+  if ! dpkg-query -W -f='${Status}' packages-microsoft-prod 2>/dev/null | grep -q "install ok installed"; then
+    UBUNTU_VER=$(lsb_release -rs)
+    wget "https://packages.microsoft.com/config/ubuntu/${UBUNTU_VER}/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    rm packages-microsoft-prod.deb
+    sudo apt-get update
+  fi
+  sudo apt-get install -y -o Dpkg::Options::="--force-confnew" dotnet-sdk-9.0
 fi
-
-sudo apt-get update
-
-# Install .NET SDK (pick the version you want)
-sudo apt-get install -y \
-  -o Dpkg::Options::="--force-confnew" \
-  dotnet-sdk-9.0
 
 dotnet tool install -g microsoft.sqlpackage
 
