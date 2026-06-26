@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+AUTO=false
+if [[ "${1:-}" == "-y" ]]; then
+  AUTO=true
+fi
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STEPS_DIR="$ROOT_DIR/steps"
 
@@ -27,8 +32,10 @@ for step in "${STEPS[@]}"; do
   bash "$step"
 
   echo
-  read -rp "Press Enter to continue to the next step..."
-  echo
+  if [[ "$AUTO" == false ]]; then
+    read -rp "Press Enter to continue to the next step..."
+    echo
+  fi
 done
 
 echo "All steps completed."

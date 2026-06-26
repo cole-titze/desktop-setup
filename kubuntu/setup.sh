@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Run all step scripts in numeric order.
-# Usage:
-#   chmod +x setup.sh
-#   ./setup.sh
+AUTO=false
+if [[ "${1:-}" == "-y" ]]; then
+  AUTO=true
+fi
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STEPS_DIR="$ROOT_DIR/steps"
@@ -23,7 +23,7 @@ mapfile -t STEPS < <(printf '%s\n' "$STEPS_DIR"/*.sh | sort)
 shopt -u nullglob
 
 if [[ "${#STEPS[@]}" -eq 0 ]]; then
-  echo "ERROR: No step scripts found in $STEPS_DIR (expected something like 00-system.sh)" >&2
+  echo "ERROR: No step scripts found in $STEPS_DIR" >&2
   exit 1
 fi
 
@@ -32,8 +32,10 @@ for step in "${STEPS[@]}"; do
   bash "$step"
 
   echo
-  read -rp "Press Enter to continue to the next step..."
-  echo
+  if [[ "$AUTO" == false ]]; then
+    read -rp "Press Enter to continue to the next step..."
+    echo
+  fi
 done
 
 echo "All steps completed."

@@ -11,10 +11,12 @@ Bootstrap scripts for a fresh desktop install. Two setups are available:
 
 ## Kubuntu
 
-### 1. Install the OS
+### Standard route
+
+#### 1. Install the OS
 [Download Kubuntu 24.04 LTS](https://kubuntu.org/getkubuntu/) and do a clean install.
 
-### 2. Clone and run
+#### 2. Clone and run
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/cole-titze/desktop-setup.git
@@ -22,11 +24,33 @@ cd desktop-setup
 bash kubuntu/setup.sh
 ```
 
-### 3. Add SSH key to GitHub
+#### 3. Add SSH key to GitHub
 The setup generates `~/.ssh/id_ed25519` and prints the public key. Add it at:
 https://github.com/settings/ssh/new
 
-### 4. Manual steps
+### Agent route
+
+#### 1. Install the OS and bootstrap Node + Claude Code
+```bash
+sudo apt-get update && sudo apt-get install -y git curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.nvm/nvm.sh
+nvm install --lts
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+#### 2. Clone the repo and let Claude run the setup
+```bash
+git clone https://github.com/cole-titze/desktop-setup.git
+cd desktop-setup
+claude "Run bash kubuntu/setup.sh -y to fully set up this Kubuntu machine"
+```
+
+#### 3. Add SSH key to GitHub
+Claude will print the public key during the SSH step. Add it at:
+https://github.com/settings/ssh/new
+
+### Manual steps (both routes)
 - Add DHCP reservation in Pi-hole for a static IP
 - Enable auto-login in KDE System Settings > Users (for Steam console experience)
 - Copy Minecraft world backups to `/opt/bedrock/data/worlds`
@@ -37,28 +61,56 @@ https://github.com/settings/ssh/new
 
 ## Bazzite
 
-### 1. Install the OS
+### Standard route
+
+#### 1. Install the OS
 [Download Bazzite](https://bazzite.gg/) and do a clean install.
 
-### 2. Clone and run
+#### 2. Clone and run
 ```bash
 git clone https://github.com/cole-titze/desktop-setup.git
 cd desktop-setup
 bash bazzite/setup.sh
 ```
 
-### 3. Reboot
-The PostgreSQL client (`psql`) is installed via `rpm-ostree` and requires a reboot to activate. Everything else is available immediately.
+#### 3. Reboot
+The PostgreSQL client and CLI tools are installed via `rpm-ostree` and require a reboot to activate. Everything else is available immediately.
 
 ```bash
 systemctl reboot
 ```
 
-### 4. Add SSH key to GitHub
+#### 4. Add SSH key to GitHub
 The setup generates `~/.ssh/id_ed25519` and prints the public key. Add it at:
 https://github.com/settings/ssh/new
 
-### 5. Manual steps
+### Agent route
+
+#### 1. Bootstrap Node + Claude Code
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.nvm/nvm.sh
+nvm install --lts
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+#### 2. Clone the repo and let Claude run the setup
+```bash
+git clone https://github.com/cole-titze/desktop-setup.git
+cd desktop-setup
+claude "Run bash bazzite/setup.sh -y to fully set up this Bazzite machine"
+```
+
+#### 3. Reboot
+```bash
+systemctl reboot
+```
+
+#### 4. Add SSH key to GitHub
+Claude will print the public key during the SSH step. Add it at:
+https://github.com/settings/ssh/new
+
+### Manual steps (both routes)
 - Copy Minecraft world backups to `/opt/bedrock/data/worlds`
 
 ---
@@ -88,7 +140,7 @@ https://github.com/settings/ssh/new
 ### Bazzite
 | Step | What |
 |------|------|
-| 10 | psql (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
+| 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |
 | 14 | Claude Code |
