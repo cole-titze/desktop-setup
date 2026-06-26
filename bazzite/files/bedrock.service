@@ -1,0 +1,23 @@
+[Unit]
+Description=Minecraft Bedrock Server (Podman)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+
+EnvironmentFile=/opt/bedrock/bedrock.env
+
+ExecStartPre=-/usr/bin/podman rm -f bedrock
+ExecStart=/usr/bin/podman run --name bedrock \
+  -p 19132:19132/udp \
+  -v /opt/bedrock/data:/data \
+  --env-file /opt/bedrock/bedrock.env \
+  docker.io/itzg/minecraft-bedrock-server
+
+ExecStop=/usr/bin/podman stop bedrock
+
+[Install]
+WantedBy=multi-user.target
