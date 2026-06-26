@@ -3,6 +3,14 @@ set -euo pipefail
 
 echo "==> Installing base development tools"
 
+# --- PostgreSQL client (rpm-ostree — requires reboot to take effect) ---
+if ! command -v psql >/dev/null 2>&1; then
+  rpm-ostree install --idempotent postgresql
+  echo "NOTE: psql will be available after next reboot."
+else
+  echo "psql $(psql --version) already installed, skipping."
+fi
+
 # --- gh CLI (binary install — no rpm-ostree reboot needed) ---
 if ! command -v gh >/dev/null 2>&1; then
   # Follow the releases/latest redirect to get the version tag, no jq needed
