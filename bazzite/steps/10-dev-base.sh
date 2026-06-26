@@ -3,13 +3,18 @@ set -euo pipefail
 
 echo "==> Installing base development tools"
 
-# --- PostgreSQL client (rpm-ostree — requires reboot to take effect) ---
-if ! command -v psql >/dev/null 2>&1; then
-  rpm-ostree install --idempotent postgresql
-  echo "NOTE: psql will be available after next reboot."
-else
-  echo "psql $(psql --version) already installed, skipping."
-fi
+# --- System packages via rpm-ostree (requires reboot to take effect) ---
+# Batched into one call to avoid multiple pending deployments
+rpm-ostree install --idempotent \
+  postgresql \
+  htop \
+  neovim \
+  jq \
+  tree \
+  unzip \
+  zip \
+  net-tools
+echo "NOTE: rpm-ostree packages (psql, htop, neovim, etc.) will be available after next reboot."
 
 # --- gh CLI (binary install — no rpm-ostree reboot needed) ---
 if ! command -v gh >/dev/null 2>&1; then
