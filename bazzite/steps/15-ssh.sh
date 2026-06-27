@@ -5,7 +5,7 @@ echo "==> Configuring SSH"
 
 # Generate key if not present
 if [[ ! -f "$HOME/.ssh/id_ed25519" ]]; then
-  ssh-keygen -t ed25519 -C "cole.titze@outlook.com"
+  ssh-keygen -t ed25519 -C "cole.titze@outlook.com" -f "$HOME/.ssh/id_ed25519" -N ""
 else
   echo "SSH key already exists, skipping keygen."
 fi
