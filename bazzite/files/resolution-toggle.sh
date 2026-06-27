@@ -1,21 +1,18 @@
 #!/bin/bash
-export DISPLAY=:0
-export XAUTHORITY="$HOME/.Xauthority"
+export WAYLAND_DISPLAY=wayland-0
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 
-# Update these to match your outputs — run: xrandr | grep ' connected'
 OUTPUT_PRIMARY="DP-1"
 OUTPUT_SECONDARY="HDMI-A-1"
-NORMAL_RES="2560x1440"
-IPAD_RES="2752x2064"
 
 STATE_FILE="/tmp/ipad-stream-mode"
 
 if [ -f "$STATE_FILE" ]; then
     rm "$STATE_FILE"
-    xrandr --output "$OUTPUT_PRIMARY" --mode "$NORMAL_RES" --scale 1x1 \
-           --output "$OUTPUT_SECONDARY" --mode 1920x1080 --right-of "$OUTPUT_PRIMARY"
+    kscreen-doctor output.$OUTPUT_PRIMARY.enable \
+                   output.$OUTPUT_SECONDARY.enable output.$OUTPUT_SECONDARY.mode.1920x1080@60
 else
     touch "$STATE_FILE"
-    xrandr --output "$OUTPUT_SECONDARY" --off \
-           --output "$OUTPUT_PRIMARY" --mode "$NORMAL_RES" --scale-from "$IPAD_RES"
+    kscreen-doctor output.$OUTPUT_PRIMARY.disable \
+                   output.$OUTPUT_SECONDARY.disable
 fi

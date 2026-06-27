@@ -115,20 +115,24 @@ https://github.com/settings/ssh/new
 - Verify display output names match your hardware: run `kscreen-doctor -o` and update `OUTPUT_PRIMARY`/`OUTPUT_SECONDARY` in `~/scripts/resolution-toggle.sh` if needed
 
 #### iPad streaming at 4:3 (Sunshine)
-To stream at a native 4:3 resolution to an iPad, add a virtual display using Bazzite's `custom-resolution-helper`:
+To stream at the iPad Pro 13" native resolution, create a virtual display using Bazzite's `custom-resolution-helper`:
 
 ```bash
 crh
 ```
 
 1. Choose **Add**
-2. Select your primary display (e.g. `DP-1`)
-3. Enter the resolution (e.g. `1920x1440` or `2732x2048` for iPad Pro native)
-4. Set refresh to `60`
-5. When asked if the display should be **always enabled** — say **yes**
-6. Reboot when prompted
+2. Select a **disconnected** port (e.g. `DP-2:disconnected`) — not your physical monitor
+3. Resolution: `2752x2064`
+4. Refresh rate: `120`
+5. Use CVT timing: `Y`
+6. Reduced blanking: `Y`
+7. Interlaced: `n`
+8. Margins: `n`
+9. Always enabled: `Y`
+10. Enter password and reboot when prompted
 
-After rebooting, configure Sunshine to capture the virtual display. Run `~/scripts/resolution-toggle.sh` to toggle the secondary monitor off/on when switching to iPad mode.
+After rebooting, select the virtual display (`DP-2`) as the capture source in Sunshine's web UI. Run `~/scripts/resolution-toggle.sh` to toggle the secondary physical monitor off/on when switching to iPad mode.
 
 ---
 
