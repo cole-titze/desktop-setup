@@ -17,6 +17,5 @@ if [ -f "$STATE_FILE" ]; then
 else
     touch "$STATE_FILE"
     xrandr --output "$OUTPUT_PRIMARY" --mode "$NORMAL_RES" \
-           --fb "$IPAD_RES" --scale-from "$IPAD_RES" \
-           --output "$OUTPUT_SECONDARY" --off
+           --scale-from "$IPAD_RES"
 fi
