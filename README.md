@@ -112,6 +112,7 @@ https://github.com/settings/ssh/new
 
 ### Manual steps (both routes)
 - Copy Minecraft world backups to `/opt/bedrock/data/worlds`
+- Verify display output names match your hardware: `xrandr | grep connected` — update `OUTPUT_PRIMARY`/`OUTPUT_SECONDARY` in `~/scripts/resolution-toggle.sh` if needed
 
 ---
 
@@ -140,6 +141,7 @@ https://github.com/settings/ssh/new
 ### Bazzite
 | Step | What |
 |------|------|
+| 05 | iPad 4:3 resolution toggle script + desktop shortcut |
 | 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |

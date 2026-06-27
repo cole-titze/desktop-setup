@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=iPad Stream (4:3)
+Exec=/home/cole/scripts/resolution-toggle.sh
+Icon=preferences-desktop-display
+Terminal=false
