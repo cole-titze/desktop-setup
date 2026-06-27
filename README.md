@@ -112,7 +112,23 @@ https://github.com/settings/ssh/new
 
 ### Manual steps (both routes)
 - Copy Minecraft world backups to `/opt/bedrock/data/worlds`
-- Verify display output names match your hardware: `xrandr | grep connected` — update `OUTPUT_PRIMARY`/`OUTPUT_SECONDARY` in `~/scripts/resolution-toggle.sh` if needed
+- Verify display output names match your hardware: run `kscreen-doctor -o` and update `OUTPUT_PRIMARY`/`OUTPUT_SECONDARY` in `~/scripts/resolution-toggle.sh` if needed
+
+#### iPad streaming at 4:3 (Sunshine)
+To stream at a native 4:3 resolution to an iPad, add a virtual display using Bazzite's `custom-resolution-helper`:
+
+```bash
+crh
+```
+
+1. Choose **Add**
+2. Select your primary display (e.g. `DP-1`)
+3. Enter the resolution (e.g. `1920x1440` or `2732x2048` for iPad Pro native)
+4. Set refresh to `60`
+5. When asked if the display should be **always enabled** — say **yes**
+6. Reboot when prompted
+
+After rebooting, configure Sunshine to capture the virtual display. Run `~/scripts/resolution-toggle.sh` to toggle the secondary monitor off/on when switching to iPad mode.
 
 ---
 
@@ -141,7 +157,7 @@ https://github.com/settings/ssh/new
 ### Bazzite
 | Step | What |
 |------|------|
-| 05 | iPad 4:3 resolution toggle script + desktop shortcut |
+| 05 | iPad resolution toggle script (`~/scripts/resolution-toggle.sh`) |
 | 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |
