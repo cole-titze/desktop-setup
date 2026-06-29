@@ -115,12 +115,12 @@ https://github.com/settings/ssh/new
 - Verify display output names match your hardware: run `kscreen-doctor -o` and update `OUTPUT_PRIMARY`/`OUTPUT_SECONDARY` in `~/scripts/resolution-toggle.sh` if needed
 
 #### iPad streaming at 4:3 (Sunshine)
-To stream at the iPad Pro 13" native resolution, create a virtual display using Bazzite's `custom-resolution-helper`:
+To stream at the iPad Pro 13" native resolution (2752×2064), create a virtual display and inject a custom EDID so the NVIDIA driver accepts the resolution.
 
+**Step 1 — create the virtual display:**
 ```bash
 crh
 ```
-
 1. Choose **Add**
 2. Select a **disconnected** port (e.g. `DP-2:disconnected`) — not your physical monitor
 3. Resolution: `2752x2064`
@@ -132,7 +132,36 @@ crh
 9. Always enabled: `Y`
 10. Enter password and reboot when prompted
 
-After rebooting, select the virtual display (`DP-2`) as the capture source in Sunshine's web UI. Run `~/scripts/resolution-toggle.sh` to toggle the secondary physical monitor off/on when switching to iPad mode.
+> Note: NVIDIA on Wayland ignores the kernel `video=` modedb for virtual displays, so DP-2 will only show 1024×768 after this reboot. The EDID step below is required.
+
+**Step 2 — inject a custom EDID so NVIDIA accepts 2752×2064:**
+```bash
+crh
+```
+1. Choose **Add-EDID**
+2. Select the same virtual port (`DP-2`)
+3. Place your patched EDID binary at `/tmp/crh/edited/edid.bin` before confirming  
+   *(crh picks it up automatically from that path)*
+4. Enter password and reboot when prompted
+
+The patched EDID must advertise 2752×2064 at 60 Hz (not 120 Hz — the EDID pixel clock field caps at ~655 MHz and 120 Hz requires ~734 MHz). crh installs it to `/usr/local/lib/firmware/edid/edid.bin` and adds these kernel args:
+```
+firmware_class.path=/usr/local/lib/firmware
+drm.edid_firmware=DP-2:edid/edid.bin
+video=DP-2:e
+```
+
+**Step 3 — point Sunshine at the virtual display:**
+
+In Sunshine's web UI (https://localhost:47990) under **Configuration → Audio/Video**, set **Display Number** to `DP-2`. Or edit directly:
+```
+~/.var/app/dev.lizardbyte.app.Sunshine/config/sunshine/sunshine.conf
+output_name = DP-2
+```
+
+**Step 4 — toggle physical monitors off when streaming:**
+
+Click the **iPad Stream (4:3)** shortcut on the Desktop (or run `~/scripts/resolution-toggle.sh`) to disable both physical monitors (DP-1 and HDMI-A-1) so Sunshine captures only the virtual display. Click/run it again to re-enable them.
 
 ---
 
@@ -161,7 +190,7 @@ After rebooting, select the virtual display (`DP-2`) as the capture source in Su
 ### Bazzite
 | Step | What |
 |------|------|
-| 05 | iPad resolution toggle script (`~/scripts/resolution-toggle.sh`) |
+| 05 | iPad resolution toggle script (`~/scripts/resolution-toggle.sh`) + Desktop shortcut |
 | 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |

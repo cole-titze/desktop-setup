@@ -1,2 +1,0 @@
-==> Installing Sunshine (.deb)
-26-sunshine complete
