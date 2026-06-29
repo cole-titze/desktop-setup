@@ -13,7 +13,7 @@ EnvironmentFile=/opt/bedrock/bedrock.env
 ExecStartPre=-/usr/bin/podman rm -f bedrock
 ExecStart=/usr/bin/podman run --name bedrock \
   -p 19132:19132/udp \
-  -v /opt/bedrock/data:/data \
+  -v /opt/bedrock/data:/data:z \
   --env-file /opt/bedrock/bedrock.env \
   docker.io/itzg/minecraft-bedrock-server
 
