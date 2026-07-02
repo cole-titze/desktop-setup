@@ -38,6 +38,7 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 
 **Bazzite step numbering:**
 - `05` — iPad resolution toggle script + Desktop shortcut
+- `06` — Monitors-on-startup autostart script (forces physical monitors back on at every login)
 - `10–15` — Dev toolchain (rpm-ostree CLI tools, gh, .NET, nvm/Node, VS Code, Claude Code, SSH)
 - `20–22` — Minecraft Bedrock server (Podman) + systemd + backup hook
 
@@ -51,6 +52,8 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 **`bazzite/files/` directory:**
 - `resolution-toggle.sh` — toggles DP-1 and HDMI-A-1 on/off for iPad Sunshine streaming; installed to `~/scripts/`
 - `resolution-toggle.desktop` — KDE desktop shortcut for the toggle script; installed to `~/Desktop/` and trusted via `gio`
+- `monitors-on-startup.sh` — force-enables DP-1/HDMI-A-1, fixes DP-1 as primary, and repositions DP-2 at every login; installed to `~/scripts/`
+- `monitors-on-startup.desktop` — XDG autostart entry for the above; installed to `~/.config/autostart/`
 - `bedrock.service`, `bedrock-backup.conf`, `bedrock-backup.sh`, `bedrock.env` — same Minecraft assets as Kubuntu but for Podman
 
 ## Key conventions
@@ -64,6 +67,7 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 - `kscreen-doctor output.<name>.priority.<n>` sets which output is primary (lower number = higher priority, `1` = primary). It must be its own `kscreen-doctor` invocation, separate from any `.enable` in the same batch — KWin re-derives priority as part of enabling an output and silently overwrites a priority passed in the same atomic call. See `resolution-toggle.sh`.
 - On Bazzite, `sudo rpm-ostree kargs` cannot be run through Claude Code's Bash tool — it needs a real TTY for the password. Give the exact command to the user to run at their own terminal.
 - `~/.config/kwinoutputconfig.json`'s `"setups"` section persists a separate enabled/disabled layout per unique set of connected outputs. If physical monitors were ever disabled (e.g. via `resolution-toggle.sh`) while the DP-2 virtual display was connected, KWin saves that as the default for "these outputs connected" and silently reapplies it — including disabling physical monitors — on every future boot where DP-2 is connected, independent of whether the toggle script actually ran. See the iPad-streaming troubleshooting section in the README.
+- This saved layout isn't a one-time gotcha to fix and forget: KWin overwrites it with whatever the *live* enabled/disabled state was the last time that exact set of outputs was connected. So every `resolution-toggle.sh` run that disables the physical monitors re-poisons the saved layout, and shutting down/rebooting while in that state boots back into monitors-off. `monitors-on-startup.sh` (installed by step `06`, autostarted via `~/.config/autostart/`) works around this by unconditionally forcing the physical monitors back on ~8s into every login, rather than trying to fix the saved layout itself.
 
 ## Post-bootstrap manual steps
 

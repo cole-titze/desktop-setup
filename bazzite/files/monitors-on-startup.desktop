@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Force Monitors On
+Exec=/home/cole/scripts/monitors-on-startup.sh
+Icon=preferences-desktop-display
+Terminal=false
+X-GNOME-Autostart-enabled=true

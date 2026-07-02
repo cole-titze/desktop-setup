@@ -177,13 +177,17 @@ KDE places newly-connected outputs at position `(0,0)` by default, same as your 
 
 KWin remembers a separate saved layout per *set of connected outputs* in `~/.config/kwinoutputconfig.json` (the `"setups"` section). If `resolution-toggle.sh` was ever run while DP-1 + HDMI-A-1 + DP-2 were all connected, KWin saved that "physical monitors off" layout as the default for that exact combination of three outputs — and will silently reapply it on every future boot the instant DP-2 becomes connected, even before the toggle script runs again. This is what causes monitors to go black right after finishing the EDID setup above, and it looks like a driver/EDID bug but isn't.
 
-Fix (only needs doing once): if monitors come up black after a reboot with the virtual display active, re-enable them —
+This isn't a one-time fix: KWin overwrites the saved layout with whatever the *live* enabled/disabled state was the last time that exact set of outputs was connected. So every time `resolution-toggle.sh` disables the physical monitors for streaming, it re-poisons the saved layout — and shutting down or rebooting while in that state boots straight back into monitors-off, even if you fixed it once before.
+
+The bootstrap installs `~/scripts/monitors-on-startup.sh` (step `06`) as an XDG autostart entry specifically to work around this: ~8 seconds into every login, it unconditionally force-enables DP-1 and HDMI-A-1, sets DP-1 as primary, and repositions DP-2, regardless of what KWin last saved. This is the actual fix — don't rely on manually re-enabling monitors after each reboot.
+
+If you need to recover immediately without waiting for a login (or the autostart script isn't installed yet):
 ```bash
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export WAYLAND_DISPLAY=wayland-0
 kscreen-doctor output.DP-1.enable output.HDMI-A-1.enable
 ```
-`.enable`/`.disable`/`.position.` are safe to run this way. **Never run `kscreen-doctor output.<name>.mode.<resolution>`** — that specific subcommand blacks out the screen on NVIDIA/Wayland regardless of which output it targets. Once you re-enable the monitors, KWin re-saves the "all three enabled" layout as the new default for that output combination, and it'll stick across reboots from then on.
+`.enable`/`.disable`/`.position.`/`.priority.` are safe to run this way. **Never run `kscreen-doctor output.<name>.mode.<resolution>`** — that specific subcommand blacks out the screen on NVIDIA/Wayland regardless of which output it targets.
 
 If the display doesn't come back at all, SSH into the machine from another device (sshd is enabled by default via the bootstrap) and run the same `kscreen-doctor` command — it works headless. Ctrl+Alt+F3 for a TTY is the fallback of last resort.
 
@@ -215,6 +219,7 @@ If the display doesn't come back at all, SSH into the machine from another devic
 | Step | What |
 |------|------|
 | 05 | iPad resolution toggle script (`~/scripts/resolution-toggle.sh`) + Desktop shortcut |
+| 06 | Monitors-on-startup autostart script — forces physical monitors back on at every login |
 | 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |
