@@ -151,6 +151,12 @@ drm.edid_firmware=DP-2:edid/edid.bin
 video=DP-2:e
 ```
 
+> **Check `rpm-ostree kargs` after this step.** Step 1's `video=DP-2:2752x2064MR@120e` (explicit 120 Hz modeline from the "Refresh rate: 120" prompt) can be left behind alongside the bare `video=DP-2:e` from Step 2. If both are present, the stray 120 Hz modeline fights the 60 Hz EDID and NVIDIA rejects the atomic commit for *all* outputs — not just DP-2 — which looks like the whole desktop failing to boot ("Applying output configuration failed!" in the kwin log, or a plain black screen). Remove it if present:
+> ```bash
+> sudo rpm-ostree kargs --delete="video=DP-2:2752x2064MR@120e"
+> ```
+> Only `video=DP-2:e` should remain for DP-2.
+
 **Step 3 — point Sunshine at the virtual display:**
 
 In Sunshine's web UI (https://localhost:47990) under **Configuration → Audio/Video**, set **Display Number** to `DP-2`. Or edit directly:
@@ -162,6 +168,24 @@ output_name = DP-2
 **Step 4 — toggle physical monitors off when streaming:**
 
 Click the **iPad Stream (4:3)** shortcut on the Desktop (or run `~/scripts/resolution-toggle.sh`) to disable both physical monitors (DP-1 and HDMI-A-1) so Sunshine captures only the virtual display. Click/run it again to re-enable them.
+
+**Step 5 — separate DP-2 from your primary display:**
+
+KDE places newly-connected outputs at position `(0,0)` by default, same as your primary monitor. Since DP-1 and DP-2 then occupy the same desktop coordinates, DP-2 looks mirrored instead of being an independent extended display. Drag it to an empty area in System Settings → Display Configuration (or `kscreen-doctor output.DP-2.position.<x>,<y>`, e.g. placing it to the right of your rightmost physical monitor). KWin auto-saves the new position to `~/.config/kwinoutputconfig.json`, so this only needs doing once.
+
+### Troubleshooting: physical monitors go black after setting up the virtual display
+
+KWin remembers a separate saved layout per *set of connected outputs* in `~/.config/kwinoutputconfig.json` (the `"setups"` section). If `resolution-toggle.sh` was ever run while DP-1 + HDMI-A-1 + DP-2 were all connected, KWin saved that "physical monitors off" layout as the default for that exact combination of three outputs — and will silently reapply it on every future boot the instant DP-2 becomes connected, even before the toggle script runs again. This is what causes monitors to go black right after finishing the EDID setup above, and it looks like a driver/EDID bug but isn't.
+
+Fix (only needs doing once): if monitors come up black after a reboot with the virtual display active, re-enable them —
+```bash
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export WAYLAND_DISPLAY=wayland-0
+kscreen-doctor output.DP-1.enable output.HDMI-A-1.enable
+```
+`.enable`/`.disable`/`.position.` are safe to run this way. **Never run `kscreen-doctor output.<name>.mode.<resolution>`** — that specific subcommand blacks out the screen on NVIDIA/Wayland regardless of which output it targets. Once you re-enable the monitors, KWin re-saves the "all three enabled" layout as the new default for that output combination, and it'll stick across reboots from then on.
+
+If the display doesn't come back at all, SSH into the machine from another device (sshd is enabled by default via the bootstrap) and run the same `kscreen-doctor` command — it works headless. Ctrl+Alt+F3 for a TTY is the fallback of last resort.
 
 ---
 

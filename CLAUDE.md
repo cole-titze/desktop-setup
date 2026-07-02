@@ -60,7 +60,9 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 - Steps that install interactive tools (e.g., Claude Code) print a follow-up instruction rather than attempting automation.
 - nvm is installed via the upstream curl script; subsequent `nvm` calls in the same step require sourcing `$NVM_DIR/nvm.sh` and temporarily disabling `set -u`.
 - Git identity is hardcoded in `11-gitconfig.sh` (Bazzite) / `31-gitconfig.sh` (Kubuntu) — update when adapting for a new user.
-- On Bazzite, never run `kscreen-doctor output.<name>.mode.<resolution>` — it blacks out the screen on NVIDIA/Wayland. Give the command to the user to run themselves.
+- On Bazzite, never run `kscreen-doctor output.<name>.mode.<resolution>` — it blacks out the screen on NVIDIA/Wayland. `.enable`/`.disable`/`.position.` are safe. Give the `.mode.` command to the user to run themselves.
+- On Bazzite, `sudo rpm-ostree kargs` cannot be run through Claude Code's Bash tool — it needs a real TTY for the password. Give the exact command to the user to run at their own terminal.
+- `~/.config/kwinoutputconfig.json`'s `"setups"` section persists a separate enabled/disabled layout per unique set of connected outputs. If physical monitors were ever disabled (e.g. via `resolution-toggle.sh`) while the DP-2 virtual display was connected, KWin saves that as the default for "these outputs connected" and silently reapplies it — including disabling physical monitors — on every future boot where DP-2 is connected, independent of whether the toggle script actually ran. See the iPad-streaming troubleshooting section in the README.
 
 ## Post-bootstrap manual steps
 
