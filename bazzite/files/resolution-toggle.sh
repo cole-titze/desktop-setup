@@ -11,6 +11,9 @@ if [ -f "$STATE_FILE" ]; then
     rm "$STATE_FILE"
     kscreen-doctor output.$OUTPUT_PRIMARY.enable \
                    output.$OUTPUT_SECONDARY.enable output.$OUTPUT_SECONDARY.mode.1920x1080@60
+    # Must be a separate call: KWin re-derives priority as part of enabling an
+    # output, so a priority set in the same atomic call as .enable is ignored.
+    kscreen-doctor output.$OUTPUT_PRIMARY.priority.1 output.$OUTPUT_SECONDARY.priority.2
 else
     touch "$STATE_FILE"
     kscreen-doctor output.$OUTPUT_PRIMARY.disable \
