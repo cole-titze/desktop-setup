@@ -113,6 +113,7 @@ https://github.com/settings/ssh/new
 ### Manual steps (both routes)
 - Copy Minecraft world backups to `/opt/bedrock/data/worlds`
 - Verify display output names match your hardware: run `kscreen-doctor -o` and update `OUTPUT_PRIMARY`/`OUTPUT_SECONDARY` in `~/scripts/resolution-toggle.sh` if needed
+- For Fallout 4 modding: follow the printed instructions from step 30 (GE-Proton, F4SE, LMO, base mods)
 
 #### iPad streaming at 4:3 (Sunshine)
 To stream at the iPad Pro 13" native resolution (2752×2064), create a virtual display and inject a custom EDID so the NVIDIA driver accepts the resolution.
@@ -226,3 +227,4 @@ If the display doesn't come back at all, SSH into the machine from another devic
 | 14 | Claude Code |
 | 15 | SSH keygen + enable sshd |
 | 20–22 | Minecraft Bedrock server (Podman) + systemd + backups |
+| 30 | Fallout 4 modding — GE-Proton, F4SE, LMO (Linux Mod Organizer), base stability mods |
