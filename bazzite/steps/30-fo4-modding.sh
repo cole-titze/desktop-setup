@@ -59,9 +59,15 @@ echo "1. Open Steam → right-click Fallout 4 → Properties → Compatibility"
 echo "2. Check 'Force the use of a specific Steam Play compatibility tool'"
 echo "3. Select 'GE-Proton Latest'"
 echo
-echo "--- STEP C: Create the Proton prefix ---"
+echo "--- STEP C: Create the Proton prefix and apply INI tweaks ---"
 echo "1. Launch Fallout 4 from Steam (let it reach the main menu)"
 echo "2. Close the game"
+echo "3. Run the following to enable loose-file mods:"
+echo
+echo "   CUSTOM_INI=\"\$HOME/.local/share/Steam/steamapps/compatdata/377160/pfx/drive_c/users/steamuser/Documents/My Games/Fallout4/Fallout4Custom.ini\""
+echo "   if ! grep -q 'bInvalidateOlderFiles' \"\$CUSTOM_INI\"; then"
+echo "     sed -i '1s/^/[Archive]\\nbInvalidateOlderFiles=1\\nsResourceDataDirsFinal=\\n\\n/' \"\$CUSTOM_INI\""
+echo "   fi"
 echo
 echo "--- STEP D: Download F4SE ---"
 echo "1. Go to: https://f4se.silverlock.org"
