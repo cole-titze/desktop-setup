@@ -92,9 +92,11 @@ echo "   - Source: ~/.local/share/Steam/steamapps/common/Fallout 4/Data"
 echo "   - Target: ~/.local/share/Steam/steamapps/compatdata/377160/pfx/drive_c/users/steamuser/AppData/Local/Fallout4"
 echo "5. Set App launch command to: xdg-open steam://rungameid/377160"
 echo
-echo "--- STEP G: Install base mods via LMO ---"
+echo "--- STEP G: Install mods via LMO ---"
 echo "Download the following from nexusmods.com/fallout4 (manual download),"
-echo "then drag each into LMO, right-click → Deployers → Data, then Deploy:"
+echo "then drag each into LMO, right-click → Deployers → Data, then Deploy."
+echo
+echo "  -- Stability / Performance --"
 echo
 echo "  1. Address Library for F4SE Plugins (All In One)"
 echo "     nexusmods.com/fallout4/mods/47327"
@@ -107,14 +109,35 @@ echo "  3. High FPS Physics Fix"
 echo "     nexusmods.com/fallout4/mods/44798"
 echo "     (Decouples physics engine from framerate — required for 60fps+)"
 echo
+echo "  -- Bug Fixes --"
+echo
+echo "  4. Unofficial Fallout 4 Patch (main file + UFO4P Creations Bundle Patches)"
+echo "     nexusmods.com/fallout4/mods/4598"
+echo "     (Select all compatibility patches in the FOMOD installer)"
+echo
+echo "  -- UI --"
+echo
+echo "  5. Mod Configuration Menu (MCM) — pick version matching your game runtime"
+echo "     nexusmods.com/fallout4/mods/21497"
+echo
+echo "  -- Textures --"
+echo
+echo "  6. Vivid Fallout - All in One (4K version)"
+echo "     nexusmods.com/fallout4/mods/25714"
+echo
+echo "  7. Vivid Fallout - LOD and Far Distant Detail (Commonwealth)"
+echo "     nexusmods.com/fallout4/mods/71745"
+echo
+echo "  8. Vivid Fallout LOD - Far Harbor (if you own Far Harbor DLC)"
+echo "     nexusmods.com/fallout4/mods/71976"
+echo
+echo "  9. Vivid Fallout LOD - Nuka World (if you own Nuka-World DLC)"
+echo "     nexusmods.com/fallout4/mods/72024"
+echo
 echo "--- STEP H: Verify ---"
 echo "1. Launch Fallout 4 from Steam"
 echo "2. Open console with ~ and type: getf4seversion"
 echo "3. Should show F4SE version (e.g. 0.7.8)"
-echo
-echo "============================================================"
-echo " NEXT: INI tweaks to enable loose-file mods (run separately)"
-echo "============================================================"
 echo
 
 echo "30-fo4-modding complete"
