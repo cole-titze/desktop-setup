@@ -116,7 +116,7 @@ https://github.com/settings/ssh/new
 - For Fallout 4 modding: follow the printed instructions from step 30 (GE-Proton, F4SE, LMO, base mods)
 - For Skyrim Special Edition modding: follow the printed instructions from step 31 (GE-Proton, SKSE, LMO, base mods)
 - For Fallout 4 ENB lighting: follow the printed instructions from step 32 (ENB binaries, NAC X)
-- For Skyrim Special Edition ENB lighting: follow the printed instructions from step 33 (ENB binaries, Cathedral Weathers, Rudy ENB SE) — note step 33 documents a Proton/DXVK compatibility issue that currently forces ENB's own shader effects off; the weather/shadow/texture mods still work fine on their own
+- For Skyrim Special Edition ENB lighting: follow the printed instructions from step 33 (ENB binaries, Cathedral Weathers, Rudy ENB SE) — requires Skyrim's compatibility tool set to `GE-Proton9-27` specifically, not GE-Proton Latest, or ENB's shader effects black-screen/crash; see step 33's notes
 
 #### iPad streaming at 4:3 (Sunshine)
 To stream at the iPad Pro 13" native resolution (2752×2064), create a virtual display and inject a custom EDID so the NVIDIA driver accepts the resolution.
@@ -233,4 +233,4 @@ If the display doesn't come back at all, SSH into the machine from another devic
 | 30 | Fallout 4 modding — GE-Proton, F4SE, LMO (Linux Mod Organizer), base stability mods |
 | 31 | Skyrim Special Edition modding — GE-Proton, SKSE, LMO (Linux Mod Organizer), base stability mods |
 | 32 | Fallout 4 ENB lighting — ENB binaries, NAC X (bundled ENB preset) |
-| 33 | Skyrim Special Edition ENB lighting — ENB binaries, Cathedral Weathers, Rudy ENB SE (ENB shader effects currently disabled, see step's Known Issue) |
+| 33 | Skyrim Special Edition ENB lighting — ENB binaries, Cathedral Weathers, Rudy ENB SE (requires GE-Proton9-27, not Latest) |
