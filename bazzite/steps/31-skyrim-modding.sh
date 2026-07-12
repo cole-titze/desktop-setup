@@ -69,6 +69,17 @@ echo "   if [ ! -f \"\$CUSTOM_INI\" ] || ! grep -q 'bInvalidateOlderFiles' \"\$C
 echo "     printf '[Archive]\\nbInvalidateOlderFiles=1\\nsResourceDataDirsFinal=\\n' >> \"\$CUSTOM_INI\""
 echo "   fi"
 echo
+echo "4. Since we launch via SKSE directly, the vanilla Bethesda launcher never"
+echo "   runs — and it's normally what populates SkyrimPrefs.ini's iPresentInterval"
+echo "   key. Without it, Skyrim SE's fallback default is vsync ON, silently"
+echo "   capping FPS to your display's refresh rate regardless of any Proton/ENB"
+echo "   framerate settings. Disable it explicitly:"
+echo
+echo "   PREFS_INI=\"\$HOME/.local/share/Steam/steamapps/compatdata/489830/pfx/drive_c/users/steamuser/Documents/My Games/Skyrim Special Edition/SkyrimPrefs.ini\""
+echo "   if [ -f \"\$PREFS_INI\" ] && ! grep -q 'iPresentInterval' \"\$PREFS_INI\"; then"
+echo "     sed -i '/^\\[Display\\]/a iPresentInterval=0' \"\$PREFS_INI\""
+echo "   fi"
+echo
 echo "--- STEP D: Check your installed game version ---"
 echo "   strings \"\$HOME/.local/share/Steam/steamapps/common/Skyrim Special Edition/SkyrimSE.exe\" | grep -oE '1\\.[0-9]+\\.[0-9]+\\.[0-9]+' | sort -u"
 echo "   Steam's current release is the Anniversary Edition build (e.g. 1.6.1170)."
