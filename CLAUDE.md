@@ -39,6 +39,7 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 **Bazzite step numbering:**
 - `05` — iPad resolution toggle script + Desktop shortcut
 - `06` — Monitors-on-startup autostart script (forces physical monitors back on at every login)
+- `07` — iPhone virtual-display toggle script + Desktop shortcut (mirrors 05, separate state file)
 - `10–15` — Dev toolchain (rpm-ostree CLI tools, gh, .NET, nvm/Node, VS Code, Claude Code, SSH)
 - `20–22` — Minecraft Bedrock server (Podman) + systemd + backup hook
 
@@ -52,7 +53,9 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 **`bazzite/files/` directory:**
 - `resolution-toggle.sh` — toggles DP-1 and HDMI-A-1 on/off for iPad Sunshine streaming; installed to `~/scripts/`
 - `resolution-toggle.desktop` — KDE desktop shortcut for the toggle script; installed to `~/Desktop/` and trusted via `gio`
-- `monitors-on-startup.sh` — force-enables DP-1/HDMI-A-1, fixes DP-1 as primary, and repositions DP-2 at every login; installed to `~/scripts/`
+- `iphone-resolution-toggle.sh` — same toggle pattern as `resolution-toggle.sh` but for iPhone Sunshine streaming (DP-3); uses its own state file (`/tmp/iphone-stream-mode`) so it can be run independently of the iPad toggle; installed to `~/scripts/`
+- `iphone-resolution-toggle.desktop` — KDE desktop shortcut for the iPhone toggle script; installed to `~/Desktop/` and trusted via `gio`
+- `monitors-on-startup.sh` — force-enables DP-1/HDMI-A-1, fixes DP-1 as primary, and repositions both DP-2 (iPad) and DP-3 (iPhone) virtual displays at every login; installed to `~/scripts/`
 - `monitors-on-startup.desktop` — XDG autostart entry for the above; installed to `~/.config/autostart/`
 - `bedrock.service`, `bedrock-backup.conf`, `bedrock-backup.sh`, `bedrock.env` — same Minecraft assets as Kubuntu but for Podman
 
@@ -68,6 +71,7 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 - On Bazzite, `sudo rpm-ostree kargs` cannot be run through Claude Code's Bash tool — it needs a real TTY for the password. Give the exact command to the user to run at their own terminal.
 - `~/.config/kwinoutputconfig.json`'s `"setups"` section persists a separate enabled/disabled layout per unique set of connected outputs. If physical monitors were ever disabled (e.g. via `resolution-toggle.sh`) while the DP-2 virtual display was connected, KWin saves that as the default for "these outputs connected" and silently reapplies it — including disabling physical monitors — on every future boot where DP-2 is connected, independent of whether the toggle script actually ran. See the iPad-streaming troubleshooting section in the README.
 - This saved layout isn't a one-time gotcha to fix and forget: KWin overwrites it with whatever the *live* enabled/disabled state was the last time that exact set of outputs was connected. So every `resolution-toggle.sh` run that disables the physical monitors re-poisons the saved layout, and shutting down/rebooting while in that state boots back into monitors-off. `monitors-on-startup.sh` (installed by step `06`, autostarted via `~/.config/autostart/`) works around this by unconditionally forcing the physical monitors back on ~8s into every login, rather than trying to fix the saved layout itself.
+- `crh`'s (`/usr/bin/custom-resolution-helper`) Add-EDID flow only supports **one** custom EDID system-wide: it always writes the staged file to the fixed path `/usr/local/lib/firmware/edid/edid.bin` and appends a standalone `drm.edid_firmware=<connector>:edid/edid.bin` karg. `edid_firmware` is a plain kernel string parameter (`modinfo drm | grep edid`), so a second `drm.edid_firmware=` karg for a second connector doesn't merge with the first — the last one wins at boot, silently dropping the earlier connector's EDID. Adding a second virtual display's EDID (e.g. DP-3 alongside the existing DP-2 iPad EDID) must be done by hand: copy the new EDID to a distinct filename, add it to `/etc/dracut.conf.d/edid.conf`, and replace the single-connector karg with one combined comma-separated value (`drm.edid_firmware=DP-2:edid/edid.bin,DP-3:edid/edid-dp3.bin` — note the `edid/` prefix is required for both entries, since it's relative to `firmware_class.path=/usr/local/lib/firmware`) in a single `rpm-ostree kargs` call — never run `crh add-edid` again once more than one virtual display's EDID is in play. See the iPhone streaming section in the README for the full manual procedure.
 
 ## Post-bootstrap manual steps
 

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=iPhone Stream (19.5:9)
+Exec=/home/cole/scripts/iphone-resolution-toggle.sh
+Icon=preferences-desktop-display
+Terminal=false

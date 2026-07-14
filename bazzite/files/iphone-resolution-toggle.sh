@@ -4,9 +4,9 @@ export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 
 OUTPUT_PRIMARY="DP-1"
 OUTPUT_SECONDARY="HDMI-A-1"
-OUTPUT_VIRTUAL_OTHER="DP-3"  # iPhone virtual display; always-enabled, must be disabled too or Sunshine sees both virtuals
+OUTPUT_VIRTUAL_OTHER="DP-2"  # iPad virtual display; must be disabled too or Sunshine sees both virtuals
 
-STATE_FILE="/tmp/ipad-stream-mode"
+STATE_FILE="/tmp/iphone-stream-mode"
 
 if [ -f "$STATE_FILE" ]; then
     rm "$STATE_FILE"
