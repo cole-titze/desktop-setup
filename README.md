@@ -174,6 +174,8 @@ output_name = DP-2
 
 Click the **iPad Stream (4:3)** shortcut on the Desktop (or run `~/scripts/resolution-toggle.sh`) to disable both physical monitors (DP-1 and HDMI-A-1) so Sunshine captures only the virtual display. Click/run it again to re-enable them.
 
+Since Skyrim/Fallout 4 launch via SKSE/F4SE directly (bypassing the Bethesda launcher's resolution picker — see the modding troubleshooting notes), this script also writes the matching resolution (2752x2064 for the iPad, or 2560x1440 for the physical monitor) into both games' prefs INIs each time it toggles, so the games render at the right resolution for whichever display is active without needing a picker.
+
 **Step 5 — separate DP-2 from your primary display:**
 
 KDE places newly-connected outputs at position `(0,0)` by default, same as your primary monitor. Since DP-1 and DP-2 then occupy the same desktop coordinates, DP-2 looks mirrored instead of being an independent extended display. Drag it to an empty area in System Settings → Display Configuration (or `kscreen-doctor output.DP-2.position.<x>,<y>`, e.g. placing it to the right of your rightmost physical monitor). KWin auto-saves the new position to `~/.config/kwinoutputconfig.json`, so this only needs doing once.
@@ -239,6 +241,8 @@ output_name = DP-3
 **Step 4 — toggle physical monitors off when streaming:**
 
 Click the **iPhone Stream (19.5:9)** shortcut on the Desktop (or run `~/scripts/iphone-resolution-toggle.sh`) to disable both physical monitors so Sunshine captures only the virtual display. Click/run it again to re-enable them. This is a separate script/state file from the iPad's `resolution-toggle.sh`, so the two toggles don't interfere with each other.
+
+Like the iPad toggle, this script also writes the matching resolution (2796x1290 for the iPhone, or 2560x1440 for the physical monitor) into both games' prefs INIs each time it toggles, since Skyrim/Fallout 4 launch via SKSE/F4SE directly and never show the Bethesda launcher's resolution picker.
 
 **Step 5 — check DP-3's position:**
 
