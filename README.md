@@ -262,6 +262,19 @@ kscreen-doctor output.DP-1.enable output.HDMI-A-1.enable
 
 If the display doesn't come back at all, SSH into the machine from another device (sshd is enabled by default via the bootstrap) and run the same `kscreen-doctor` command — it works headless. Ctrl+Alt+F3 for a TTY is the fallback of last resort.
 
+### Troubleshooting: Sunshine keeps prompting locally for screen/input access, blocking Moonlight
+
+On KDE Wayland, Sunshine (installed as the `dev.lizardbyte.app.Sunshine` flatpak via Bazzite Portal) captures screen and input through `xdg-desktop-portal-kde`'s RemoteDesktop portal. KWin's portal has a known quirk where it re-prompts locally on every session even after you've granted access once and a restore token is stored — so a remote Moonlight client can't connect until someone accepts the dialog on the physical machine.
+
+Step `08` fixes this permanently using Plasma 6.3+'s portal pre-authorization, which skips the dialog outright instead of relying on the restore token:
+```bash
+flatpak permission-set kde-authorized remote-desktop dev.lizardbyte.app.Sunshine yes
+flatpak permission-set kde-authorized screencast dev.lizardbyte.app.Sunshine yes
+```
+This must run *after* Sunshine is installed via Bazzite Portal (step `08` no-ops if it isn't yet). It's a per-user grant in `~/.local/share/flatpak/db/`, so it survives reboots. GUI equivalent: System Settings → Application Permissions → Sunshine → enable "Remote control."
+
+If prompts still appear after running this, restart the service (`systemctl --user restart app-dev.lizardbyte.app.Sunshine.service`) and check [LizardByte/Sunshine#3953](https://github.com/LizardByte/Sunshine/issues/3953) for a version-specific portal bug.
+
 ---
 
 ## What gets installed
@@ -292,6 +305,7 @@ If the display doesn't come back at all, SSH into the machine from another devic
 | 05 | iPad resolution toggle script (`~/scripts/resolution-toggle.sh`) + Desktop shortcut |
 | 06 | Monitors-on-startup autostart script — forces physical monitors back on at every login |
 | 07 | iPhone resolution toggle script (`~/scripts/iphone-resolution-toggle.sh`) + Desktop shortcut |
+| 08 | Sunshine KDE portal pre-authorization — stops the local accept-screen-share/remote-control prompt from blocking Moonlight connections |
 | 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |
