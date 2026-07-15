@@ -38,6 +38,7 @@ cat > "$HOME/scripts/fo4_f4se_launch.sh" << 'WRAPPER'
 # Replaces Fallout4.exe with f4se_loader.exe in Steam's Proton launch command
 # so that Steam always launches F4SE instead of the base game exe.
 GAME_DIR="$HOME/.local/share/Steam/steamapps/common/Fallout 4"
+export SteamDeck=0
 exec "${@//"$GAME_DIR/Fallout4.exe"/"$GAME_DIR/f4se_loader.exe"}"
 WRAPPER
 chmod +x "$HOME/scripts/fo4_f4se_launch.sh"

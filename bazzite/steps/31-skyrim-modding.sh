@@ -37,6 +37,7 @@ cat > "$HOME/scripts/skyrim_skse_launch.sh" << 'WRAPPER'
 # Replaces SkyrimSE.exe with skse64_loader.exe in Steam's Proton launch command
 # so that Steam always launches SKSE instead of the base game exe.
 GAME_DIR="$HOME/.local/share/Steam/steamapps/common/Skyrim Special Edition"
+export SteamDeck=0
 exec "${@//"$GAME_DIR/SkyrimSE.exe"/"$GAME_DIR/skse64_loader.exe"}"
 WRAPPER
 chmod +x "$HOME/scripts/skyrim_skse_launch.sh"
