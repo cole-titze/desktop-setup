@@ -23,6 +23,9 @@ if [[ "$UBUNTU_MAJOR" -ge 24 ]]; then
     sudo apt-get update
   fi
   # Ubuntu 26.04+ ships dotnet-sdk-10.0 natively; 24.04 ships 8.0/9.0
+  # TODO(agent): nhl-odds moved to .NET 11 (2026-11). Stayed on 10 here because Ubuntu had no
+  # native dotnet-sdk-11.0 package. Check `apt-cache show dotnet-sdk-11.0`; once Ubuntu ships it,
+  # switch the install below to 11.0 (do not re-add the Microsoft repo, which conflicts).
   if apt-cache show dotnet-sdk-9.0 2>/dev/null | grep -q "ubuntu"; then
     sudo apt-get install -y dotnet-sdk-9.0
   else
