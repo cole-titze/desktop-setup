@@ -321,6 +321,7 @@ If prompts still appear after running this, restart the service (`systemctl --us
 | 06 | Monitors-on-startup autostart script — forces physical monitors back on at every login |
 | 07 | iPhone resolution toggle script (`~/scripts/iphone-resolution-toggle.sh`) + Desktop shortcut |
 | 08 | Sunshine KDE portal pre-authorization — stops the local accept-screen-share/remote-control prompt from blocking Moonlight connections |
+| 09 | Window snap layouts — Shift+drag snaps to left/right halves on DP-1 and top/bottom halves on the vertical HDMI-A-1 (log out/in to apply) |
 | 10 | psql, htop, neovim, jq, etc. (rpm-ostree), gh CLI, .NET 9, sqlpackage, nvm/Node LTS |
 | 11 | Git config |
 | 12–13 | VS Code (Flatpak) + settings |
