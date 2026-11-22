@@ -140,16 +140,27 @@ crh
 > Note: NVIDIA on Wayland ignores the kernel `video=` modedb for virtual displays, so DP-2 will only show 1024×768 after this reboot. The EDID step below is required.
 
 **Step 2 — inject a custom EDID so NVIDIA accepts 2752×2064:**
-```bash
-crh
-```
-1. Choose **Add-EDID**
-2. Select the same virtual port (`DP-2`)
-3. Place your patched EDID binary at `/tmp/crh/edited/edid.bin` before confirming  
-   *(crh picks it up automatically from that path)*
-4. Enter password and reboot when prompted
 
-The patched EDID must advertise 2752×2064 at 60 Hz (not 120 Hz — the EDID pixel clock field caps at ~655 MHz and 120 Hz requires ~734 MHz). crh installs it to `/usr/local/lib/firmware/edid/edid.bin` and adds these kernel args:
+2752×2064 at 120 Hz needs a ~763 MHz pixel clock, which is beyond the base EDID Detailed Timing Descriptor's 655.35 MHz field limit (2-byte, 10 kHz units) — a plain `crh`-injected EDID can only declare 2752×2064 at 60 Hz. To get 120 Hz at the native resolution, generate an EDID with a **DisplayID 1.3 extension** (Type I Detailed Timing, 3-byte pixel clock field, ~167 GHz headroom) instead:
+
+```bash
+node bazzite/files/generate-displayid-edid.mjs 2752 2064 120 IPD "iPad Pro 13" 264 /tmp/edid.bin
+edid-decode -c /tmp/edid.bin   # confirm "EDID conformity: PASS" before it goes anywhere near the system
+sudo mkdir -p /usr/local/lib/firmware/edid
+sudo cp /tmp/edid.bin /usr/local/lib/firmware/edid/edid.bin
+sudo mkdir -p /etc/dracut.conf.d/
+echo 'install_items+=" /usr/local/lib/firmware/edid/edid.bin "' | sudo tee /etc/dracut.conf.d/edid.conf
+sudo rpm-ostree kargs --append-if-missing="drm.edid_firmware=DP-2:edid/edid.bin"
+systemctl reboot
+```
+
+This is self-contained (no external tool or npm dependency — pure Node, matching this repo's script style) and is a drop-in replacement for `crh`'s Add-EDID step: same output file, same dracut config, same karg. The base EDID block still carries a 2752×2064@60Hz fallback DTD, so anything that only reads the base block (or a GPU/driver that doesn't honor the DisplayID extension) still gets a sane mode.
+
+> **DisplayID version matters and is GPU/driver-dependent.** DisplayID 2.0 (Type VII timing) is the "modern" choice on paper, but on an RTX 4070 Ti with NVIDIA driver 610.43.03, a DisplayID 2.0 block was read successfully (confirmed via `edid-decode` against `/sys/class/drm/cardN-DP-2/edid`) yet the 120 Hz timing never appeared in the KMS mode list — no kernel/driver log message either way, just silent. Switching to **DisplayID 1.3** (Type I timing — same 20-byte layout and pixel-clock encoding as Type VII, just an older section header) worked immediately and survived a reboot. NVIDIA's own dev forum shows inconsistent DisplayID support across GPU generations (1.3 working on some older Quadros where 2.0 didn't), so if 120 Hz doesn't show up in `kscreen-doctor -o` after this step, that's a real possibility for a given GPU/driver — not necessarily a mistake in the EDID itself. `generate-displayid-edid.mjs` only builds 1.3.
+>
+> If your setup can't get DisplayID honored at all, `crh`'s Add-EDID flow (see the iPhone streaming section below for the non-DisplayID hand-patch technique) still gets you a working 60 Hz virtual display.
+
+Either way, the deployed EDID adds these kernel args:
 ```
 firmware_class.path=/usr/local/lib/firmware
 drm.edid_firmware=DP-2:edid/edid.bin
