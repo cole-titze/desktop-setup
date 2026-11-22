@@ -7,7 +7,7 @@
 # mode), KWin boots back into that same "monitors off" layout. This runs
 # unconditionally on every session start to override that, regardless of
 # what was last saved.
-export WAYLAND_DISPLAY=wayland-0
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(basename "$(ls -d /run/user/$(id -u)/wayland-[0-9] 2>/dev/null | head -n1)")}"
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 
 OUTPUT_PRIMARY="DP-1"

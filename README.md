@@ -272,7 +272,7 @@ The bootstrap installs `~/scripts/monitors-on-startup.sh` (step `06`) as an XDG 
 If you need to recover immediately without waiting for a login (or the autostart script isn't installed yet):
 ```bash
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
-export WAYLAND_DISPLAY=wayland-0
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(basename "$(ls -d /run/user/$(id -u)/wayland-[0-9] 2>/dev/null | head -n1)")}"
 kscreen-doctor output.DP-1.enable output.HDMI-A-1.enable
 ```
 `.enable`/`.disable`/`.position.`/`.priority.` are safe to run this way. **Never run `kscreen-doctor output.<name>.mode.<resolution>`** — that specific subcommand blacks out the screen on NVIDIA/Wayland regardless of which output it targets.
