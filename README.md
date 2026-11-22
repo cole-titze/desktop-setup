@@ -116,6 +116,8 @@ https://github.com/settings/ssh/new
 - For iPhone streaming: follow the `crh` EDID injection steps below to create the 2796×1290 virtual display on DP-3
 - For Fallout 4 modding: follow the printed instructions from step 30 (GE-Proton, F4SE, LMO, base mods)
 - For Skyrim Special Edition modding: follow the printed instructions from step 31 (GE-Proton, SKSE, LMO, base mods)
+  - Step 31 also installs `~/scripts/skyrim-save-backup.sh`, which the SKSE launch wrapper runs before every launch: dated `.tar.gz` copies of the Saves folder plus `Plugins.txt`/`loadorder.txt`, tagged with the game version, in `~/Backups/Skyrim` (newest 20 kept). Run it by hand before changing mods, game version, or Proton.
+  - Steam game updates break SKSE and most SKSE plugins (e.g. 1.6.1170 → 1.7.104). Steps 31 and 33 each end with an "After a game update" checklist. As of 1.7.104, SSE Engine Fixes and ENB Helper SE are skipped (no working build yet).
 - For Fallout 4 ENB lighting: follow the printed instructions from step 32 (ENB binaries, NAC X)
 - For Skyrim Special Edition ENB lighting: follow the printed instructions from step 33 (ENB binaries, Cathedral Weathers, Rudy ENB SE) — requires Skyrim's compatibility tool set to `GE-Proton9-27` specifically, not GE-Proton Latest, or ENB's shader effects black-screen/crash; see step 33's notes
 

@@ -27,16 +27,31 @@ flatpak override --user --filesystem="$HOME/.local/share/Steam" io.github.limo_a
 flatpak override --user --filesystem="$HOME/LIMO" io.github.limo_app.limo
 echo "Flatpak permissions set."
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # ---------------------------------------------------------------------------
-# 3. Create SKSE launcher wrapper script
+# 3. Install save-backup script
+# ---------------------------------------------------------------------------
+# A Steam auto-update (1.6.1170 -> 1.7.104 in Nov 2026) left an existing save
+# crashing on load. Dated save backups (tagged with the game version and the
+# plugin list) make it possible to roll back instead of losing a playthrough.
+# The launch wrapper below runs this automatically before every launch.
+echo "--- Installing Skyrim save-backup script ---"
+mkdir -p "$HOME/scripts" "$HOME/Backups/Skyrim"
+install -m 0755 "$ROOT_DIR/files/skyrim-save-backup.sh" "$HOME/scripts/skyrim-save-backup.sh"
+echo "Installed ~/scripts/skyrim-save-backup.sh (backups go to ~/Backups/Skyrim, newest 20 kept)"
+
+# ---------------------------------------------------------------------------
+# 4. Create SKSE launcher wrapper script
 # ---------------------------------------------------------------------------
 echo "--- Creating SKSE launch wrapper ---"
-mkdir -p "$HOME/scripts"
 cat > "$HOME/scripts/skyrim_skse_launch.sh" << 'WRAPPER'
 #!/bin/bash
 # Replaces SkyrimSE.exe with skse64_loader.exe in Steam's Proton launch command
 # so that Steam always launches SKSE instead of the base game exe.
+# Backs up saves first (non-fatal: a failed backup never blocks the launch).
 GAME_DIR="$HOME/.local/share/Steam/steamapps/common/Skyrim Special Edition"
+"$HOME/scripts/skyrim-save-backup.sh" > "$HOME/Backups/skyrim-save-backup.log" 2>&1 || true
 export SteamDeck=0
 exec "${@//"$GAME_DIR/SkyrimSE.exe"/"$GAME_DIR/skse64_loader.exe"}"
 WRAPPER
@@ -58,6 +73,15 @@ echo "--- STEP B: Set Skyrim Special Edition to use GE-Proton ---"
 echo "1. Open Steam → right-click Skyrim Special Edition → Properties → Compatibility"
 echo "2. Check 'Force the use of a specific Steam Play compatibility tool'"
 echo "3. Select 'GE-Proton Latest'"
+echo
+echo "--- STEP B2: Stop Steam from updating Skyrim in the background ---"
+echo "Every game update breaks SKSE and most SKSE plugins until their authors"
+echo "release new builds (1.7.104 landed silently on 2026-11-14 and broke the"
+echo "whole setup). Steam → right-click Skyrim → Properties → Updates →"
+echo "'Only update this game when I launch it'. Note this only DEFERS updates"
+echo "to launch time, it doesn't prompt — to truly hold a version, launch with"
+echo "Steam in Offline mode. Saves are backed up automatically on each launch"
+echo "(see ~/scripts/skyrim-save-backup.sh), so a surprise update is recoverable."
 echo
 echo "--- STEP C: Create the Proton prefix and apply INI tweaks ---"
 echo "1. Launch Skyrim Special Edition from Steam (let it reach the main menu)"
@@ -83,17 +107,22 @@ echo "   fi"
 echo
 echo "--- STEP D: Check your installed game version ---"
 echo "   strings \"\$HOME/.local/share/Steam/steamapps/common/Skyrim Special Edition/SkyrimSE.exe\" | grep -oE '1\\.[0-9]+\\.[0-9]+\\.[0-9]+' | sort -u"
-echo "   Steam's current release is the Anniversary Edition build (e.g. 1.6.1170)."
+echo "   Steam's current release is 1.7.104 (since Aug 2026; previously 1.6.1170)."
 echo "   Only download the matching GOG build if your game folder was installed via GOG."
 echo
 echo "--- STEP E: Download SKSE64 ---"
-echo "1. Go to: https://skse.silverlock.org"
-echo "2. Download the 7z matching your game version from Step D (AE build unless you know you're on the older 1.5.97 release)"
+echo "1. Go to: https://skse.silverlock.org — it lists which build matches which"
+echo "   game version. As of 1.7.104 (SKSE 2.3.1) the Steam AE build is only"
+echo "   hosted on Nexus: nexusmods.com/skyrimspecialedition/mods/30379?tab=files"
+echo "2. Download the build matching your game version from Step D (Steam AE, not GOG)"
 echo "3. Extract the archive"
 echo "4. Copy skse64_loader.exe and skse64_*.dll to:"
 echo "   ~/.local/share/Steam/steamapps/common/Skyrim Special Edition/"
-echo "5. Copy the Data/Scripts/ folder to:"
-echo "   ~/.local/share/Steam/steamapps/common/Skyrim Special Edition/Data/"
+echo "   (when updating, delete the old skse64_<oldversion>.dll)"
+echo "5. Copy the Data/Scripts/*.pex files into (overwriting):"
+echo "   ~/.local/share/Steam/steamapps/common/Skyrim Special Edition/Data/Scripts/"
+echo "   Use 'cp --remove-destination' — Data/ is mostly LMO symlinks, and a plain"
+echo "   cp onto a symlink writes through into the LMO staging copy instead."
 echo
 echo "--- STEP F: Set Steam launch options for SKSE ---"
 echo "1. Steam → right-click Skyrim Special Edition → Properties → General → Launch Options"
@@ -121,9 +150,23 @@ echo "--- STEP H: Install mods via LMO ---"
 echo "Download the following from nexusmods.com/skyrimspecialedition (manual download),"
 echo "then drag each into LMO, right-click → Deployers → Data, then Deploy."
 echo
+echo "GOTCHA: some archives wrap everything in an extra top-level data/ (or Data/)"
+echo "folder. LMO doesn't strip it, so the mod deploys to Data/data/... where the"
+echo "game never looks — silently, no error. This hit 7 mods here (all three"
+echo "Skyrim 202X parts, EVLaS, ENB Helper, EVLaS Skyrim Underside, Less"
+echo "Distracting Blowing Snow) and went unnoticed for months. After deploying,"
+echo "this must print nothing:"
+echo "   find \"\$HOME/.local/share/Steam/steamapps/common/Skyrim Special Edition/Data/data\" -type l 2>/dev/null"
+echo "If it lists files, flatten the offending staging folder(s) — the number in"
+echo "the symlink target is the mod id (LMO must be closed):"
+echo "   M=\$HOME/LIMO/Skyrim/<id>; mv \$M/data \$M/.tmp && mv \$M/.tmp/* \$M/ && rmdir \$M/.tmp"
+echo "then Deploy again and delete the leftover dead links:"
+echo "   find \".../Skyrim Special Edition/Data/data\" -xtype l -delete; find \".../Data/data\" -depth -type d -empty -delete"
+echo
 echo "  -- Compatibility --"
 echo
-echo "  1. Address Library for SKSE Plugins (grab both AE and pre-AE file versions)"
+echo "  1. Address Library for SKSE Plugins — 'All in One' file for your game"
+echo "     version (v13 or later for 1.7.104; v11 stops at 1.6.1170)"
 echo "     nexusmods.com/skyrimspecialedition/mods/32444"
 echo
 echo "  -- Bug Fixes --"
@@ -151,7 +194,18 @@ echo
 echo "--- STEP I: Verify ---"
 echo "1. Launch Skyrim Special Edition from Steam"
 echo "2. Open console with ~ and type: getskseversion"
-echo "3. Should show SKSE version (e.g. 2.2.6)"
+echo "3. Should show SKSE version (e.g. 2.3.1)"
+echo "4. Check which SKSE plugins actually loaded:"
+echo "   grep -E 'checking plugin|loaded correctly|recompiled|fatal|disabled' \\"
+echo "     \"\$HOME/.local/share/Steam/steamapps/compatdata/489830/pfx/drive_c/users/steamuser/Documents/My Games/Skyrim Special Edition/SKSE/skse64.log\""
+echo "   'must be recompiled for new address library' = that plugin has no build"
+echo "   for this game version yet; update it or disable it in LMO."
+echo
+echo "--- After a game update (SKSE/plugins stop loading) ---"
+echo "1. Install the new SKSE build + matching Address Library (Steps E and H.1)"
+echo "2. Launch, run Step I.4, and update/disable each plugin that fails"
+echo "3. Test on a NEW game first — saves made on the old version (or with a"
+echo "   different mod list) may crash on load. Restore from ~/Backups/Skyrim if needed."
 echo
 
 echo "31-skyrim-modding complete"
