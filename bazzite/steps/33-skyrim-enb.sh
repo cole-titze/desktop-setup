@@ -131,6 +131,12 @@ echo "      nexusmods.com/skyrimspecialedition/mods/36198"
 echo
 echo "  13. Vanilla Complex Grasses for ENB"
 echo "      nexusmods.com/skyrimspecialedition/mods/68640"
+echo "      SKIP on ENB 0.505 / game 1.7.104. Its textures are ENB complex-grass"
+echo "      format: double height, color on top and normals below. With complex"
+echo "      grass not working, the whole sheet renders on the grass and gives"
+echo "      gray boxes plus a grainy look. Toggling EnableComplexGrass doesn't help."
+echo "      Disabling this mod in LMO fixed it. Re-enable only after confirming"
+echo "      complex grass works again."
 echo
 echo "  Rough load-order note from the preset readme: Embers XD before"
 echo "  Water for ENB, Water for ENB before Obsidian Mountain Fogs and"

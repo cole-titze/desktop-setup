@@ -40,6 +40,9 @@ echo "--- Installing Skyrim save-backup script ---"
 mkdir -p "$HOME/scripts" "$HOME/Backups/Skyrim"
 install -m 0755 "$ROOT_DIR/files/skyrim-save-backup.sh" "$HOME/scripts/skyrim-save-backup.sh"
 echo "Installed ~/scripts/skyrim-save-backup.sh (backups go to ~/Backups/Skyrim, newest 20 kept)"
+# Texture downscaler used for the Skyrim 202X 2K copy (see Step H.5).
+install -m 0755 "$ROOT_DIR/files/dds-downscale.py" "$HOME/scripts/dds-downscale.py"
+echo "Installed ~/scripts/dds-downscale.py"
 
 # ---------------------------------------------------------------------------
 # 4. Create SKSE launcher wrapper script
@@ -191,6 +194,20 @@ echo "     nexusmods.com/skyrimspecialedition/mods/2347"
 echo "     No resolution prompt during install — this version ships a fixed mix"
 echo "     of 1k/4k/8k textures baked into one download, not separate resolution files."
 echo
+echo "     VRAM WARNING: at full resolution (some textures 8K/16K) this needed"
+echo "     ~10 GB of VRAM on its own and filled the 12 GB RTX 4070 Ti alongside"
+echo "     ENB + Sunshine encoding: <=25 FPS, GPU '95% busy' at only ~123 W of"
+echo "     285 W (stalled on memory). Nexus has no 2K file for 10.5.x (the 2K"
+echo "     files under Old files are 2021's 8.4.2 — don't mix them in). Build a"
+echo "     2K copy from the installed parts instead. It drops the top mip levels"
+echo "     of the >2K textures, with no re-encode (34 GB of textures -> 3.8 GB):"
+echo "       cd ~/LIMO/Skyrim   # LMO staging; <a>/<b>/<c> = the three 202X mod ids"
+echo "       ~/scripts/dds-downscale.py \"\$HOME/Documents/Mods/Skyrim/Skyrim 202X 2K\" <a> <b> <c>"
+echo "       (cd \"\$HOME/Documents/Mods/Skyrim/Skyrim 202X 2K\" && zip -0 -r -q ../\"Skyrim 202X 2K.zip\" meshes textures)"
+echo "     Install the zip in LMO and disable the three 4K parts (keep them for later)."
+echo "     Place it where the 4K parts sat, above Window Shadows RT, so WSRT keeps"
+echo "     its 6 Riften interior meshes. Result: locked 60 FPS, ~6.3 GB VRAM for Skyrim."
+echo
 echo "--- STEP I: Verify ---"
 echo "1. Launch Skyrim Special Edition from Steam"
 echo "2. Open console with ~ and type: getskseversion"
@@ -206,6 +223,11 @@ echo "1. Install the new SKSE build + matching Address Library (Steps E and H.1)
 echo "2. Launch, run Step I.4, and update/disable each plugin that fails"
 echo "3. Test on a NEW game first — saves made on the old version (or with a"
 echo "   different mod list) may crash on load. Restore from ~/Backups/Skyrim if needed."
+echo "   Retry old saves (Load from the main menu, not Continue) once the setup is"
+echo "   stable again: on 1.7.104, a save that crashed mid-troubleshooting loaded"
+echo "   fine later. Its plugin list (readable from the .ess header) still matched."
+echo "4. Prevent surprise updates: Steam -> Go Offline, and/or Properties -> Updates"
+echo "   -> 'Only update this game when I launch it'."
 echo
 
 echo "31-skyrim-modding complete"

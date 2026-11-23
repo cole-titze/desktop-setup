@@ -61,6 +61,7 @@ Each `setup.sh` discovers all `steps/*.sh` files, sorts them by filename, and ru
 - `monitors-on-startup.desktop` — XDG autostart entry for the above; installed to `~/.config/autostart/`
 - `bedrock.service`, `bedrock-backup.conf`, `bedrock-backup.sh`, `bedrock.env` — same Minecraft assets as Kubuntu but for Podman
 - `skyrim-save-backup.sh` — tarballs Skyrim SE's Saves folder plus `Plugins.txt`/`loadorder.txt` into `~/Backups/Skyrim/skyrim-saves_<timestamp>_v<gameversion>.tar.gz`, keeps the newest 20; installed to `~/scripts/` by step `31` and called (non-fatally) at the top of `skyrim_skse_launch.sh` so every launch is backed up
+- `dds-downscale.py` — makes a downscaled copy of a texture mod (e.g. 4K/8K → 2K) by dropping the top mip levels of large DDS files (no re-encode; hardlinks everything else; sources untouched); installed to `~/scripts/` by step `31` and used for the Skyrim 202X 2K copy (step 31, H.5)
 - `generate-displayid-edid.mjs` — self-contained (no npm deps) Node script that builds a virtual-display EDID with a DisplayID 1.3 Type I timing for resolution/refresh combos whose pixel clock exceeds the base EDID DTD's 655.35 MHz field limit (e.g. the iPad Pro's 2752×2064@120Hz, ~763 MHz); see the iPad streaming section in the README
 
 ## Key conventions
