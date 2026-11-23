@@ -107,6 +107,15 @@ echo "   PREFS_INI=\"\$HOME/.local/share/Steam/steamapps/compatdata/489830/pfx/d
 echo "   if [ -f \"\$PREFS_INI\" ] && ! grep -q 'iPresentInterval' \"\$PREFS_INI\"; then"
 echo "     sed -i '/^\\[Display\\]/a iPresentInterval=0' \"\$PREFS_INI\""
 echo "   fi"
+echo "   NOTE: iPresentInterval alone didn't uncap it here (the game was still"
+echo "   stuck around 60). SSE Display Tweaks (Step H.6) is what actually controls"
+echo "   vsync/framerate now. Its EnableVSync overrides iVSyncPresentInterval."
+echo
+echo "5. CPU tuning. Skyrim is main-thread bound, not GPU bound: facing Whiterun,"
+echo "   the 'Main' thread sat at ~99% while the 4070 Ti was ~60% busy (check with"
+echo "   'top -H -p \$(pgrep -f SkyrimSE.exe)'). Fewer draw calls helped (60 -> 63-66"
+echo "   FPS in the city view, no visible loss):"
+echo "   sed -i -E 's/^fShadowDistance=.*/fShadowDistance=6000.0000/; s/^fLODFadeOutMultObjects=.*/fLODFadeOutMultObjects=15.0000/' \"\$PREFS_INI\""
 echo
 echo "--- STEP D: Check your installed game version ---"
 echo "   strings \"\$HOME/.local/share/Steam/steamapps/common/Skyrim Special Edition/SkyrimSE.exe\" | grep -oE '1\\.[0-9]+\\.[0-9]+\\.[0-9]+' | sort -u"
@@ -207,6 +216,21 @@ echo "       (cd \"\$HOME/Documents/Mods/Skyrim/Skyrim 202X 2K\" && zip -0 -r -q
 echo "     Install the zip in LMO and disable the three 4K parts (keep them for later)."
 echo "     Place it where the 4K parts sat, above Window Shadows RT, so WSRT keeps"
 echo "     its 6 Riften interior meshes. Result: locked 60 FPS, ~6.3 GB VRAM for Skyrim."
+echo
+echo "  -- Framerate / physics --"
+echo
+echo "  6. SSE Display Tweaks (0.5.25+ loads on 1.7.104)"
+echo "     nexusmods.com/skyrimspecialedition/mods/34705"
+echo "     Unlocks FPS past 60 without breaking physics (dynamic Havok fMaxTime)."
+echo "     Edit SKSE/Plugins/SSEDisplayTweaks.ini in its LMO staging folder"
+echo "     (values for a 120 Hz iPad + Moonlight at 120):"
+echo "       FramerateLimit=120        [HAVOK] MaximumFramerate=120"
+echo "       DynamicUpdateBudget=true  BudgetMaxFPS=120"
+echo "       EnableVSync=false         EnableTearing=true   (both needed to drop"
+echo "                                 vsync in borderless; safe with ENB ForceVSync=false)"
+echo "     Check that it loaded: SKSE/SSEDisplayTweaks.log should show"
+echo "     'runtime 1.7.104.0' and 'Max FPS = 120'. Result: 80+ outdoors, ~65"
+echo "     facing Whiterun (main-thread bound), 120 in menus."
 echo
 echo "--- STEP I: Verify ---"
 echo "1. Launch Skyrim Special Edition from Steam"
